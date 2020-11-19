@@ -1,0 +1,424 @@
+@font-face {
+    font-family: mifuente;
+    src: url("fuentes/Roboto-Regular.ttf");
+}
+
+body {
+    font-family: mifuente;
+    background: linear-gradient(180deg, #8BC34A 0%, #ffecb3 0%, #f4433652 100%);
+    min-height: 100vh;
+    height: auto;
+    margin: 0px;
+    margin-bottom: 50px;
+}
+
+#formularioIniciarSesion {
+    width: 300px;
+    height: 280px;
+    position: relative;
+    left: 50%;
+    top: 60px;
+    transform: translateX(-50%);
+    text-align: center;
+    background-color: white;
+    padding: 40px;
+    box-shadow: 0px 0px 10px black;
+}
+
+#formularioIniciarSesion span {
+    color: rgb(255, 174, 0);
+    font-weight: 700;
+    font-size: 25px;
+}
+
+#formularioIniciarSesion input[type="text"], #formularioIniciarSesion input[type="password"] {
+    padding: 5px 10px 5px 15px;
+    border: none;
+    outline: none;
+    height: 30px;
+    background-color: rgb(243, 243, 243);
+    border-bottom: 3px solid rgb(243, 243, 243);
+    margin-top: 20px;
+    width: 200px;
+}
+#formularioIniciarSesion input[type="text"]:hover, #formularioIniciarSesion input[type="password"]:hover {
+    border-bottom: 3px solid rgb(255, 174, 0);
+}
+#formularioIniciarSesion input[type="text"]:focus, #formularioIniciarSesion input[type="password"]:focus {
+    border-bottom: 3px solid rgb(255, 174, 0);
+}
+
+#formularioIniciarSesion input[type="submit"] {
+    background-color: rgb(252, 231, 199);
+    border-radius: 10px;
+    outline: none;
+    background-color:white;
+    cursor: pointer;
+    padding: 10px;
+    margin-top: 20px;
+    width: 180px;
+    border: 3px solid rgb(255, 174, 0);
+    color: rgb(255, 174, 0);
+    font-weight: 700;
+    font-size: 16px;
+}
+#formularioIniciarSesion input[type="submit"]:hover {
+    background-color: rgb(255, 174, 0);
+    color: white;
+}
+
+#formularioIniciarSesion a {
+    color: rgb(182, 124, 0);
+}
+#formularioIniciarSesion a:hover {
+    color:  rgb(255, 174, 0);
+}
+#formularioIniciarSesion a:visited {
+    color:  rgb(182, 124, 0);
+}
+
+#tablaIncidencias {
+    width: 950px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+}
+
+#header {
+    width: 100%;
+    height: 70px;
+    background-color: white;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    margin-bottom: 50px;
+    box-shadow: 0px 0px 10px black;
+}
+
+#botonCerrarSesion {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-right: 30px;
+    padding: 10px 20px 10px 20px;
+    background-color: #9c2525;
+    border: none;
+    border-radius: 2px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    outline: none;
+    right: 0px;
+}
+#botonCerrarSesion:hover {
+    background-color: #b31616;
+    box-shadow: 0px 0px 10px grey;
+}
+
+#logo {
+    width: 130px;
+    position: relative;
+    float: left;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 15px;
+}
+
+#tablaHeader {
+    width: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    padding-left: 30px;
+    height: 60%;
+}
+
+#tablaHeader td {
+    padding: 0px 20px 0px 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    border-bottom:2px solid white;
+    
+}
+#tablaHeader td:hover {
+    transition: all 0.2s;
+    border-bottom: 2px solid #ffbf00;
+    background-color: #fffbee;
+    box-shadow: 0px 0px 10px #ffbf0048;
+}
+
+#divIncidencias {
+    background-color: #ffffff;
+    width: 80%;
+    height: auto;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0px 0px 5px grey;
+    padding: 0px 50px 70px 50px;
+}
+#divIncidencias:hover {
+    box-shadow: 0px 0px 10px grey;
+}
+
+#tituloIncidencias {
+    position: relative;
+    top: 30px;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.incidencia {
+    height: 150px;
+    width: 100%;
+    background-color: white;
+    top: 30px;
+    position: relative;
+    margin-top: 30px;
+    border-radius: 5px;
+    text-align: center;
+    transition: 0.5s;
+    overflow: hidden;
+    box-shadow: 0px 0px 10px rgb(216, 216, 216);
+}
+.incidencia:hover {
+    box-shadow: 0px 0px 10px rgb(172, 172, 172);
+}
+
+.maxPrioridad {
+    background-color:  #fac6c6;
+}
+.maxPrioridad:hover {
+    background-color:  #f8b1b1;
+}
+.maxPrioridadF {
+    color:  #d60000;
+}
+.maxPrioridadB {
+    background-color:   #d60000;
+}
+
+.medPrioridad {
+    background-color:  #fae5c6;
+}
+.medPrioridad:hover {
+    background-color: #f3cd93;
+}
+.medPrioridadF {
+    color:  #b96f00;
+}
+.medPrioridadB {
+    background-color:   #b96f00;
+}
+
+.bajaPrioridad {
+    background-color:  #faf6c6;
+}
+.bajaPrioridad:hover {
+    background-color: #f1e899;
+}
+.bajaPrioridadF {
+    color:  #a88f00;
+}
+.bajaPrioridadB {
+    background-color:   #a88f00;
+}
+
+.ninPrioridad {
+    background-color:  #cffac6;
+}
+.ninPrioridad:hover {
+    background-color:  #98ec87;
+}
+.ninPrioridadF {
+    color:   #1fb800;
+}
+.ninPrioridadB {
+    background-color:   #1fb800;
+}
+
+.incidencia span:not(.bolaPrioridadIncidencia){
+    position: relative;
+    top: 40px;
+}
+
+.bolaPrioridadIncidencia {
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    display: inline-block;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+
+.botonMostrarMas {
+    margin-top: 40px;
+    padding: 5px 20px 5px 20px;
+    cursor: pointer;
+    background-color: rgb(179, 217, 248);
+    border: none;
+    outline: none;
+    font-weight: 700;
+    border-radius: 5px;
+}
+.botonMostrarMas:hover {
+    background-color: rgb(140, 203, 255);
+}
+
+.botonModificarIncidencia {
+    position: relative;
+    top: 40px;
+    padding: 5px 20px 5px 20px;
+    background-color: #FFC107;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0px 0px 5px grey;
+    cursor: pointer;
+    outline: none;
+}
+.botonModificarIncidencia:hover {
+    background-color: #e2aa00;
+}
+
+.botonCerrarIncidencia {
+    position: relative;
+    top: 40px;
+    padding: 5px 20px 5px 20px;
+    background-color: #ff8484;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0px 0px 5px grey;
+    cursor: pointer;
+    outline: none;
+}
+.botonCerrarIncidencia:hover:not(.disabled) {
+    background-color: #f57676;
+}
+
+.botonEliminarIncidencia {
+    position: relative;
+    top: 40px;
+    padding: 5px 20px 5px 20px;
+    background-color: #882929;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0px 0px 5px grey;
+    cursor: pointer;
+    outline: none;
+    color: white;
+}
+.botonEliminarIncidencia:hover {
+    background-color: #6e1717;
+}
+
+.disabled {
+    cursor: not-allowed;
+    background-color: rgb(197, 197, 197);
+}
+
+#divConfirmacion {
+    position: fixed;
+    width: 460px;
+    height: 160px;
+    background-color: white;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0px 0px 10px black;
+}
+
+#fondo {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0.6;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+#divConfirmacion span, #divModificarIncidencia span, #divCrearIncidencia span {
+    font-size: 22px;
+    position: relative;
+    top: 20px;
+}
+
+#botonConfirmar {
+    position: relative;
+    top: 40px;
+    padding: 10px 20px 10px 20px;
+    background-color:#212d9c;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0px 0px 5px grey;
+    cursor: pointer;
+    outline: none;
+    color: white;
+    margin-right: 10px;
+}
+#botonConfirmar:hover {
+    background-color: #1528da;
+}
+
+#botonCancelar {
+    position: relative;
+    top: 40px;
+    padding: 10px 20px 10px 20px;
+    background-color: #882929;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0px 0px 5px grey;
+    cursor: pointer;
+    outline: none;
+    color: white;
+    margin-left: 10px;
+}
+#botonCancelar:hover {
+    background-color: #ac2121;
+}
+
+#divModificarIncidencia {
+    position: absolute;
+    width: 460px;
+    height: 660px;
+    background-color: white;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0px 0px 10px black;
+}
+
+#tablaModificar {
+    width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    top: 50px;
+    text-align: left;
+}
+
+#tablaModificar input {
+    padding: 5px;
+    width: 100%;
+    outline: none;
+}
+
+#tablaModificar textarea {
+    padding: 5px;
+    width: 100%;
+    font-family: mifuente;
+    outline: none;
+    resize: none;
+}
+
+#tablaModificar select {
+    padding: 5px;
+    width: 100%;
+}
