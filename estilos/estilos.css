@@ -5,7 +5,7 @@
 
 body {
     font-family: mifuente;
-    background: linear-gradient(180deg, #8BC34A 0%, #ffecb3 0%, #f4433652 100%);
+    background: linear-gradient(180deg, #73ccff 0%, #0059ff 100%);
     min-height: 100vh;
     height: auto;
     margin: 0px;
@@ -26,7 +26,7 @@ body {
 }
 
 #formularioIniciarSesion span {
-    color: rgb(255, 174, 0);
+    color: rgb(0, 17, 255);
     font-weight: 700;
     font-size: 25px;
 }
@@ -41,15 +41,12 @@ body {
     margin-top: 20px;
     width: 200px;
 }
-#formularioIniciarSesion input[type="text"]:hover, #formularioIniciarSesion input[type="password"]:hover {
-    border-bottom: 3px solid rgb(255, 174, 0);
-}
-#formularioIniciarSesion input[type="text"]:focus, #formularioIniciarSesion input[type="password"]:focus {
-    border-bottom: 3px solid rgb(255, 174, 0);
+#formularioIniciarSesion input[type="text"]:hover, #formularioIniciarSesion input[type="password"]:hover, #formularioIniciarSesion input[type="text"]:focus, #formularioIniciarSesion input[type="password"]:focus {
+    border-bottom: 3px solid rgb(0, 17, 255);
+    border-radius: 5px;
 }
 
 #formularioIniciarSesion input[type="submit"] {
-    background-color: rgb(252, 231, 199);
     border-radius: 10px;
     outline: none;
     background-color:white;
@@ -57,24 +54,24 @@ body {
     padding: 10px;
     margin-top: 20px;
     width: 180px;
-    border: 3px solid rgb(255, 174, 0);
-    color: rgb(255, 174, 0);
+    border: 3px solid rgb(0, 17, 255);
+    color: rgb(0, 17, 255);
     font-weight: 700;
     font-size: 16px;
 }
 #formularioIniciarSesion input[type="submit"]:hover {
-    background-color: rgb(255, 174, 0);
+    background-color:rgb(0, 17, 255);
     color: white;
 }
 
 #formularioIniciarSesion a {
-    color: rgb(182, 124, 0);
+    color: rgb(2, 9, 105);
 }
 #formularioIniciarSesion a:hover {
-    color:  rgb(255, 174, 0);
+    color:  rgb(0, 17, 255);
 }
 #formularioIniciarSesion a:visited {
-    color:  rgb(182, 124, 0);
+    color:  rgb(2, 9, 105);
 }
 
 #tablaIncidencias {
