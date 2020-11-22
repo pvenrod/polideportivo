@@ -1,10 +1,11 @@
 <?php
 
     include_once("mysqlDB.php");
+    include_once("seguridad.php");
 
     class Usuario {
 
-        private $db;
+        private $db, $seguridad;
 
         /**
          * Constructor. Establece la conexión con la base de datos y la 
@@ -13,6 +14,7 @@
         public function __construct() {
 
             $this->db = new mysqlDB();
+            $this->seguridad = new Seguridad();
 
         }
 
@@ -29,27 +31,22 @@
 
             $devolver = false;
 
-            if ($result = $this->db->consulta("SELECT id, usuario, foto, rol
-                                            FROM usuarios
-                                            WHERE usuario = '$usuario' AND
-                                            BINARY contrasenya = '$contrasenya'")) {
+            $result = $this->db->consulta("SELECT pu.id, pu.usuario, pu.email, pu.imagen
+                                            FROM poliUsuarios pu
+                                            WHERE pu.usuario = '$usuario' AND
+                                            BINARY pu.contrasenya = '$contrasenya'");
 
-                foreach ($result as $usuario) { //Uso un foreach para que la forma de acceso al objeto sea siempre la misma, y no accediendo a un íncide del array directamente.
+            if ($result) {
 
-                    if ($usuario->rol != "desactivado") {
+                $result2 = $this->db->consulta("SELECT pur.idRol
+                                                FROM poliUsuarios pu
+                                                INNER JOIN poliUsuariosRoles pur
+                                                    ON pu.id = pur.idUsuario
+                                                WHERE pu.usuario = '$usuario' AND
+                                                BINARY pu.contrasenya = '$contrasenya'");
 
-                        // Iniciamos la sesión
-                        session_start();
-                        $_SESSION["usuario"] = $usuario->usuario;
-                        $_SESSION["idUsuario"] = $usuario->id;
-                        $_SESSION["foto"] = $usuario->foto;
-                        $_SESSION["rol"] = $usuario->rol;
-
-                        $devolver = true;
-                    
-                    }
-
-                }
+                $this->seguridad->abrirSesion($result[0],$result2);
+                $devolver = true;
 
             }
 
