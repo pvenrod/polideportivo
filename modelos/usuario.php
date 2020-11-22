@@ -38,14 +38,7 @@
 
             if ($result) {
 
-                $result2 = $this->db->consulta("SELECT pur.idRol
-                                                FROM poliUsuarios pu
-                                                INNER JOIN poliUsuariosRoles pur
-                                                    ON pu.id = pur.idUsuario
-                                                WHERE pu.usuario = '$usuario' AND
-                                                BINARY pu.contrasenya = '$contrasenya'");
-
-                $this->seguridad->abrirSesion($result[0],$result2);
+                $this->seguridad->abrirSesion($result[0]);
                 $devolver = true;
 
             }
@@ -172,5 +165,42 @@
             return $result;
 
         }
+
+
+        /**
+         * Función que devuelve un usuario concreto.
+         * @param id El id del usuario a consultar.
+         * @return Un objeto con los roles de la persona extraídos de la BD, o null en caso de error.
+         */
+        public function getRoles($id) {
+            
+            $result = $this->db->consulta("SELECT pr.id as id, pr.nombre as nombre
+                                            FROM poliRoles pr
+                                            INNER JOIN poliUsuariosRoles pur
+                                                ON pr.id = pur.idRol
+                                            WHERE pur.idUsuario = '$id'");
+
+            return $result;
+
+        }
+
+        /**
+         * Función que devuelve un usuario concreto.
+         * * @param id El id del usuario a consultar.
+         * @return La cantidad de roles de un usuario.
+         */
+        public function getNumRoles($id) {
+
+            $result = $this->db->consulta("SELECT count(pur.idRol) as numRoles
+                                            FROM poliUsuarios pu
+                                            INNER JOIN poliUsuariosRoles pur
+                                                ON pu.id = pur.idUsuario
+                                            WHERE pur.idUsuario = '$id'");
+
+            return $result[0]->numRoles;
+
+        }
+
+
     }
 

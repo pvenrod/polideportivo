@@ -29,7 +29,7 @@
 
             if ($this->seguridad->haySesionIniciada()) {
 
-                $this->vista->mostrar("usuario/selectorDeRol");
+                $this->verificarRoles();
 
             } else {
 
@@ -46,15 +46,7 @@
 
             if ($this->usuario->buscarUsuario($usuario, $contrasenya)) {
 
-                if (count($this->seguridad->get("roles")) > 1) {
-
-                    $this->vista->mostrar("usuario/selectorDeRol");
-
-                } else {
-
-                    $this->vista->mostrar("reservas/listaReservas");
-
-                }
+                $this->verificarRoles();
 
             } else {
 
@@ -69,6 +61,30 @@
 
             $this->seguridad->cerrarSesion();
             header("Location: index.php");
+
+        }
+
+        public function verificarRoles() {
+
+            if ( $this->usuario->getNumRoles($this->seguridad->get("id")) > 1) {
+
+                $data["roles"] = $this->usuario->getRoles($this->seguridad->get("id"));
+                $this->vista->mostrar("usuario/selectorDeRoles", $data);
+
+            } else {
+
+                $this->vista->mostrar("reservas/listaReservas");
+
+            }
+
+        }
+
+        public function procesarSeleccionDeRol() {
+
+            $rolSeleccionado = $_REQUEST["rol"];
+            $this->seguridad->set("rol",$rolSeleccionado);
+
+            echo $this->seguridad->get("rol");
 
         }
         

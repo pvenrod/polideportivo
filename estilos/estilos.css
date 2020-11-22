@@ -64,6 +64,13 @@ body {
     color: white;
 }
 
+#formularioIniciarSesion select {
+    outline: none;
+    padding: 5px;
+    margin-top: 17px;
+    width: 100px;
+}
+
 #formularioIniciarSesion a {
     color: rgb(2, 9, 105);
 }
