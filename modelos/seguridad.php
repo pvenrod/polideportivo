@@ -30,8 +30,4 @@
             }
         }
 
-        public function errorAccesoNoPermitido() {
-			$data['msjError'] = "No tienes permisos para hacer eso";
-			$this->vista->mostrar("usuario/formularioLogin", $data);
-        }
     }
