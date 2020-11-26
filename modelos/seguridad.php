@@ -15,7 +15,11 @@
         }
 
         public function get($variable) {
-            return $_SESSION[$variable];
+            if (isset($_SESSION[$variable])) {
+                return $_SESSION[$variable];
+            } else {
+                return false;
+            }
         }
 
         public function set($variable, $valor) {
