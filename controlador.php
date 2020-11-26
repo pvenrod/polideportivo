@@ -79,11 +79,29 @@
 
         }
 
-        public function procesarSeleccionDeRol() {
+        public function procesarSeleccionDeRol() { //ESTA ES LA FUNCIÓN QUE LANZA LA PRIMERA VISTA DE LA APLICACIÓN
 
             $rolSeleccionado = $_REQUEST["rol"];
             $this->seguridad->set("rol",$rolSeleccionado);
 
+            switch ($this->seguridad->get("rol")) {
+
+                case "1": //Usuarios Admin
+                    $data["usuarios"] = $this->usuario->getAll();
+                    $this->vista->mostrar("usuario/gestionUsuarios", $data);
+                break;
+
+                case "2": //Usuarios estándar
+                    $data["reservas"] = $this->reserva->getAll();
+                    $this->vista->mostrar("reservas/gestionReservas", $data);
+                break;
+
+                case "3": //Usuarios deshabilitados
+                    $this->cerrarSesion();
+                    $data['msjError'] = "Tu usuario aún no está habilitado.";
+			        $this->vista->mostrar("usuario/formularioIniciarSesion", $data);
+                break;
+            }
             echo $this->seguridad->get("rol");
 
         }
