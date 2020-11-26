@@ -16,10 +16,6 @@
             include_once("vistas/$nombreVista.php");
             include_once("vistas/footer.php");
 
-            if (!$this->seguridad->get("rol")) {
-                echo "<script>$('#header').hide()</script>";
-            }
-
         }
         
     }

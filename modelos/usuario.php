@@ -56,7 +56,7 @@
         public function get($id) {
             
             $result = $this->db->consulta("SELECT *
-                                            FROM usuarios
+                                            FROM poliUsuarios
                                             WHERE id = '$id'");
 
             return $result;
@@ -70,7 +70,7 @@
         public function getAll() {
 
             $result = $this->db->consulta("SELECT *
-                                            FROM usuarios");
+                                            FROM poliUsuarios");
 
             return $result;
 
@@ -90,7 +90,7 @@
             $result = 0;
 
             $id = $this->db->consulta("SELECT IFNULL(MAX(id), 0) + 1 as id
-                                        FROM usuarios")[0]->id; // Saco el nuevo id para el usuario
+                                        FROM poliUsuarios")[0]->id; // Saco el nuevo id para el usuario
             $usuario;
             $email;
             $contrasenya1;
@@ -100,7 +100,7 @@
 
             if ($contrasenya1 == $contrasenya2) {
 
-                $result = $this->db->modificacion("INSERT INTO usuarios
+                $result = $this->db->modificacion("INSERT INTO poliUsuarios
                                                     VALUES
                                                         ('$id', '$usuario', '$email', '$contrasenya1', '$foto', '$rol')");
 
@@ -117,29 +117,23 @@
          * @param usuario Es el nombre de usuario del usuario a actualizar.
          * @param email Es el nuevo email del usuario a actualizar.
          * @param contrasenya Es la nueva contraseña del usuario a actualizar.
-         * @param contrasenya2 Es la confirmación de la contraseña.
          * @param rol Es el rol del usuario a actualizar.
          * @return 1 en caso de éxito, y 0 en caso de error.
          */
-        public function update($id, $usuario, $email, $contrasenya, $contrasenya2, $rol) {
+        public function update($id,$usuario,$email,$nombre,$apellido1,$apellido2,$dni,$imagen) {
 
-            $result = 0;
+            if ($imagen["error"] == 4) {
+                $result = $this->db->modificacion("UPDATE poliUsuarios
+                                                    SET usuario='$usuario',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2'
+                                                    WHERE id='$id'");
+            } else {
 
-            $id;
-            $usuario;
-            $email;
-            $contrasenya;
-            $contrasenya2;
-            $rol;
+                $rutaImagen = 'img/' . $usuario . "." . pathinfo($imagen["name"], PATHINFO_EXTENSION);
+                move_uploaded_file($imagen["tmp_name"],$rutaImagen);
 
-            if ($contrasenya == $contrasenya2) {
-
-                $this->delete($id);
-
-                $result = $this->db->modificacion("INSERT INTO usuarios
-                                                VALUES
-                                                    ('$id', '$usuario', '$email', '$contrasenya', '$rol'");
-
+                $result = $this->db->modificacion("UPDATE poliUsuarios
+                                                    SET usuario='$usuario',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2',imagen='$rutaImagen'
+                                                    WHERE id='$id'");
             }
 
             return $result;
@@ -154,7 +148,7 @@
          */
         public function delete($id) {
 
-            $result = $this->db->modificacion("DELETE FROM usuarios
+            $result = $this->db->modificacion("DELETE FROM poliUsuarios
                                             WHERE id = '$id'");
 
             // También vamos a borrar todas las incidencias creadas por este usuario.

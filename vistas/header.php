@@ -11,14 +11,25 @@
 
 <?php
 
-    if (isset($_SESSION["usuario"])) {
+    include_once("modelos/seguridad.php");
+    $seguridad = new Seguridad();
+
+    if ($seguridad->haySesionIniciada()) {
 
         echo "<div id='header'>
             <a href='index.php'><img id='logo' src='img/logo.png' /></a>
             <table id='tablaHeader'>
                 <tr>
-                    <td onclick='location.href=\"index.php\"'>Home</td>
-                </tr>
+                    <td onclick='location.href=\"index.php?action=gestionReservas\"'>Reservas</td>";
+
+                if ($seguridad->get("rol") == 1) {
+
+                   echo "<td onclick='location.href=\"index.php?action=gestionUsuarios\"'>Usuarios</td>
+                        <td onclick='location.href=\"index.php?action=gestionInstalaciones\"'>Instalaciones</td>";
+
+                }
+
+        echo    "</tr>
             </table>
             <button id='botonCerrarSesion' onclick='location.href=\"index.php?action=cerrarSesion\"'>Cerrar sesión</button>
         </div>";

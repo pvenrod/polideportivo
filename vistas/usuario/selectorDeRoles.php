@@ -26,6 +26,13 @@
         echo "<p style='color: blue'>" . $data["msjError"] . "</p>";
 
     }
+
+    
+    if (!$this->seguridad->get("rol")) {
+
+        echo "<script>$('#header').hide()</script>";
+        
+    }
 ?>
 
 </form>

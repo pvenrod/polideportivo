@@ -66,14 +66,23 @@
 
         public function verificarRoles() {
 
-            if ( $this->usuario->getNumRoles($this->seguridad->get("id")) > 1) {
+            if (!$this->seguridad->get("rol")) {
 
-                $data["roles"] = $this->usuario->getRoles($this->seguridad->get("id"));
-                $this->vista->mostrar("usuario/selectorDeRoles", $data);
+                if ( $this->usuario->getNumRoles($this->seguridad->get("id")) > 1) {
+
+                    $data["roles"] = $this->usuario->getRoles($this->seguridad->get("id"));
+                    $this->vista->mostrar("usuario/selectorDeRoles", $data);
+    
+                } else {
+    
+                    $this->gestionReservas();
+    
+                }
 
             } else {
 
-                $this->vista->mostrar("reservas/listaReservas");
+                //$this->gestionReservas(); TENGO QUE DESCOMENTARLO CUANDO TENGAS ESTA FUNCION TERMINADA
+                $this->gestionUsuarios();
 
             }
 
@@ -87,13 +96,11 @@
             switch ($this->seguridad->get("rol")) {
 
                 case "1": //Usuarios Admin
-                    $data["usuarios"] = $this->usuario->getAll();
-                    $this->vista->mostrar("usuario/gestionUsuarios", $data);
+                    $this->gestionUsuarios();
                 break;
 
                 case "2": //Usuarios estándar
-                    $data["reservas"] = $this->reserva->getAll();
-                    $this->vista->mostrar("reservas/gestionReservas", $data);
+                    $this->gestionInstalaciones();
                 break;
 
                 case "3": //Usuarios deshabilitados
@@ -101,9 +108,56 @@
                     $data['msjError'] = "Tu usuario aún no está habilitado.";
 			        $this->vista->mostrar("usuario/formularioIniciarSesion", $data);
                 break;
+
             }
-            echo $this->seguridad->get("rol");
 
         }
+
+
+
+
+
+
+
+        // ======================================= FUNCIONES DE GESTIÓN DE USUARIOS, INSTALACIONES Y RESERVAS
+
+        public function gestionUsuarios() {
+            $data["usuarios"] = $this->usuario->getAll();
+            $this->vista->mostrar("usuario/gestionUsuarios", $data);
+        }
+
+        public function gestionInstalaciones() {
+            //$data["instalaciones"] = $this->instalacion->getAll();
+            $this->vista->mostrar("usuario/gestionInstalaciones", $data);
+        }
         
+        public function gestionReservas() {
+            //$data["reservas"] = $this->reserva->getAll();
+            $this->vista->mostrar("usuario/gestionReservas", $data);
+        }
+
+        // ==========================================================================================================
+
+
+
+
+
+
+
+        public function modificarUsuario() {
+            $id = $_REQUEST["id"];
+            $usuario = $_REQUEST["usuario"];
+            $email = $_REQUEST["email"];
+            $nombre = $_REQUEST["nombre"];
+            $apellido1 = $_REQUEST["apellido1"];
+            $apellido2 = $_REQUEST["apellido2"];
+            $dni = $_REQUEST["dni"];
+            $imagen = $_FILES["imagen"];
+
+            if ($this->usuario->update($id,$usuario,$email,$nombre,$apellido1,$apellido2,$dni,$imagen)) {
+                $this->gestionUsuarios();
+            }
+        
+
+        }
     }
