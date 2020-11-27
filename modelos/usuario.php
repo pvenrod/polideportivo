@@ -32,7 +32,7 @@
             $devolver = false;
 
             $result = $this->db->consulta("SELECT pu.id, pu.usuario, pu.email, pu.imagen
-                                            FROM poliUsuarios pu
+                                            FROM poliusuarios pu
                                             WHERE pu.usuario = '$usuario' AND
                                             BINARY pu.contrasenya = '$contrasenya'");
 
@@ -56,7 +56,7 @@
         public function get($id) {
             
             $result = $this->db->consulta("SELECT *
-                                            FROM poliUsuarios
+                                            FROM poliusuarios
                                             WHERE id = '$id'");
 
             return $result;
@@ -70,7 +70,7 @@
         public function getAll() {
 
             $result = $this->db->consulta("SELECT *
-                                            FROM poliUsuarios");
+                                            FROM poliusuarios");
 
             return $result;
 
@@ -90,7 +90,7 @@
             $result = 0;
 
             $id = $this->db->consulta("SELECT IFNULL(MAX(id), 0) + 1 as id
-                                        FROM poliUsuarios")[0]->id; // Saco el nuevo id para el usuario
+                                        FROM poliusuarios")[0]->id; // Saco el nuevo id para el usuario
             $usuario;
             $email;
             $contrasenya1;
@@ -100,7 +100,7 @@
 
             if ($contrasenya1 == $contrasenya2) {
 
-                $result = $this->db->modificacion("INSERT INTO poliUsuarios
+                $result = $this->db->modificacion("INSERT INTO poliusuarios
                                                     VALUES
                                                         ('$id', '$usuario', '$email', '$contrasenya1', '$foto', '$rol')");
 
@@ -123,17 +123,23 @@
         public function update($id,$usuario,$email,$nombre,$apellido1,$apellido2,$dni,$imagen) {
 
             if ($imagen["error"] == 4) {
-                $result = $this->db->modificacion("UPDATE poliUsuarios
-                                                    SET usuario='$usuario',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2'
-                                                    WHERE id='$id'");
+
+                $this->db->modificacion("UPDATE poliusuarios
+                                            SET usuario='temporal'
+                                            WHERE id='$id'");
+
+                $result = $this->db->modificacion("UPDATE poliusuarios
+                                                        SET usuario='$usuario',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2'
+                                                        WHERE id='$id'");
+
             } else {
 
                 $rutaImagen = 'img/' . $usuario . "." . pathinfo($imagen["name"], PATHINFO_EXTENSION);
                 move_uploaded_file($imagen["tmp_name"],$rutaImagen);
 
-                $result = $this->db->modificacion("UPDATE poliUsuarios
-                                                    SET usuario='$usuario',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2',imagen='$rutaImagen'
-                                                    WHERE id='$id'");
+                $result = $this->db->modificacion("UPDATE poliusuarios
+                                                        SET usuario='$usuario',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2',imagen='$rutaImagen'
+                                                        WHERE id='$id'");
             }
 
             return $result;
@@ -148,7 +154,7 @@
          */
         public function delete($id) {
 
-            $result = $this->db->modificacion("DELETE FROM poliUsuarios
+            $result = $this->db->modificacion("DELETE FROM poliusuarios
                                             WHERE id = '$id'");
 
             // También vamos a borrar todas las incidencias creadas por este usuario.
@@ -169,8 +175,8 @@
         public function getRoles($id) {
             
             $result = $this->db->consulta("SELECT pr.id as id, pr.nombre as nombre
-                                            FROM poliRoles pr
-                                            INNER JOIN poliUsuariosRoles pur
+                                            FROM poliroles pr
+                                            INNER JOIN poliusuariosroles pur
                                                 ON pr.id = pur.idRol
                                             WHERE pur.idUsuario = '$id'");
 
@@ -186,12 +192,36 @@
         public function getNumRoles($id) {
 
             $result = $this->db->consulta("SELECT count(pur.idRol) as numRoles
-                                            FROM poliUsuarios pu
-                                            INNER JOIN poliUsuariosRoles pur
+                                            FROM poliusuarios pu
+                                            INNER JOIN poliusuariosroles pur
                                                 ON pu.id = pur.idUsuario
                                             WHERE pur.idUsuario = '$id'");
 
             return $result[0]->numRoles;
+
+        }
+
+
+
+
+        public function busqueda($texto) {
+
+            $result = $this->db->consulta("SELECT *
+                                            FROM poliusuarios
+                                            WHERE 
+                                                usuario LIKE '%$texto%'
+                                                OR
+                                                email LIKE '%$texto%'
+                                                OR
+                                                nombre LIKE '%$texto%'
+                                                OR
+                                                apellido1 LIKE '%$texto%'
+                                                OR
+                                                apellido2 LIKE '%$texto%'
+                                                OR
+                                                dni LIKE '%$texto%'");
+            
+            return $result;
 
         }
 

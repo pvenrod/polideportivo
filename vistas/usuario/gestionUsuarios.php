@@ -4,6 +4,11 @@
 
     echo "<div id='divContenedor'>
             <span id='titulo'>GESTIÓN DE USUARIOS</span>
+            <form action='index.php' method='post' id='buscador'>
+                <input type='text' name='texto' placeholder='Usuario, nombre, DNI...'>
+                <input type='hidden' name='action' value='buscarUsuario'>
+                <button><img src='img/lupa.png'></button>
+            </form>
             <table>";
 
 

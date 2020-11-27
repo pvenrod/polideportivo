@@ -162,6 +162,43 @@ body {
     margin-left: 20px;
 }
 
+#buscador {
+    display: inline;
+}
+
+#buscador input {
+    position: absolute;
+    right: 4%;
+    top: 18px;
+    padding: 5px;
+    outline: none;
+    border: 1px solid rgb(155, 155, 155);
+    border-radius: 4px;
+}
+#buscador input:focus {
+    background-color: rgb(240, 251, 255);
+    box-shadow: 0px 5px 5px rgb(228, 228, 228);
+}
+
+#buscador button {
+    position: absolute;
+    right: 4%;
+    float: right;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+#buscador button img {
+    width: 20px;
+    opacity: 0.6;
+}
+
+#buscador button img:hover {
+    opacity: 1;
+}
+
 #divContenedor table {
     width: 100%;
 }   

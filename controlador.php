@@ -145,6 +145,7 @@
 
 
         public function modificarUsuario() {
+
             $id = $_REQUEST["id"];
             $usuario = $_REQUEST["usuario"];
             $email = $_REQUEST["email"];
@@ -154,10 +155,30 @@
             $dni = $_REQUEST["dni"];
             $imagen = $_FILES["imagen"];
 
-            if ($this->usuario->update($id,$usuario,$email,$nombre,$apellido1,$apellido2,$dni,$imagen)) {
+            if ($this->usuario->update($id,$usuario,$email,$nombre,$apellido1,$apellido2,$dni,$imagen) > 0) {
                 $this->gestionUsuarios();
+            } else {
+                echo "<script>
+                        i=5;
+                            setInterval(function() {
+                                if (i==0) {
+                                    location.href='index.php';
+                                }
+                            document.body.innerHTML = 'Ha ocurrido un error. Redireccionando en ' + i;
+                                i--;
+                            },1000);
+                    </script>";
             }
-        
 
         }
+
+        public function buscarUsuario() {
+
+            $texto = $_REQUEST["texto"];
+
+            $data["usuarios"] = $this->usuario->busqueda($texto);
+            $this->vista->mostrar("usuario/gestionUsuarios", $data);
+
+        }
+
     }
