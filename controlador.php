@@ -5,11 +5,12 @@
     //include_once("modelos/reserva.php");
     //include_once("modelos/instalacion.php");
     //include_once("modelos/horarioInstalacion.php");
+    include_once("modelos/rol.php");
     include_once("modelos/seguridad.php");
 
     class Controlador {
 
-        private $vista, $usuario, $reserva, $instalacion, $horarioInstalacion;
+        private $vista, $usuario, $reserva, $instalacion, $horarioInstalacion, $rol;
 
         /**
          * Constructor. Crea las variables de los modelos y la vista
@@ -21,6 +22,7 @@
             //$this->reserva = new Reserva();
             //$this->instalacion = new Instalacion();
             //$this->horarioInstalacion = new HorarioInstalacion();
+            $this->rol = new Rol();
             $this->seguridad = new Seguridad();
 
         }
@@ -123,6 +125,8 @@
 
         public function gestionUsuarios() {
             $data["usuarios"] = $this->usuario->getAll();
+            $data["todosLosRoles"] = $this->rol->getAll();
+            $data["rolesUsuario"] = $this->rol->get($this->seguridad->get("id"));
             $this->vista->mostrar("usuario/gestionUsuarios", $data);
         }
 
@@ -140,6 +144,14 @@
 
 
 
+        public function perfil() {
+
+            $id = $_REQUEST["id"];
+
+            $data["usuario"] = $this->usuario->get($id);
+            $this->vista->mostrar("usuario/perfil",$data);
+
+        }
 
 
 
@@ -169,6 +181,13 @@
                             },1000);
                     </script>";
             }
+
+        }
+
+        public function eliminarUsuario() {
+
+            $id = $_REQUEST["id"];
+            $this->usuario->delete($id);
 
         }
 

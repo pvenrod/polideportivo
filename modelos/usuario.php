@@ -134,7 +134,7 @@
 
             } else {
 
-                $rutaImagen = 'img/' . $usuario . "." . pathinfo($imagen["name"], PATHINFO_EXTENSION);
+                $rutaImagen = 'img/usuarios/' . $usuario . "." . pathinfo($imagen["name"], PATHINFO_EXTENSION);
                 move_uploaded_file($imagen["tmp_name"],$rutaImagen);
 
                 $result = $this->db->modificacion("UPDATE poliusuarios
@@ -154,12 +154,9 @@
          */
         public function delete($id) {
 
-            $result = $this->db->modificacion("DELETE FROM poliusuarios
-                                            WHERE id = '$id'");
-
-            // También vamos a borrar todas las incidencias creadas por este usuario.
-            $result2 = $this->db->modificacion("DELETE FROM incidencias
-                                             WHERE usuario = '$id'");
+            $result = $this->db->modificacion("UPDATE poliusuarios
+                                            SET borrado = 'si'
+                                            WHERE id='$id'");
 
 
             return $result;
