@@ -3,7 +3,7 @@
     include_once("vista.php");
     include_once("modelos/usuario.php");
     //include_once("modelos/reserva.php");
-    //include_once("modelos/instalacion.php");
+    include_once("modelos/instalacion.php");
     //include_once("modelos/horarioInstalacion.php");
     include_once("modelos/rol.php");
     include_once("modelos/seguridad.php");
@@ -20,7 +20,7 @@
             $this->vista = new Vista();
             $this->usuario = new Usuario();
             //$this->reserva = new Reserva();
-            //$this->instalacion = new Instalacion();
+            $this->instalacion = new Instalacion();
             //$this->horarioInstalacion = new HorarioInstalacion();
             $this->rol = new Rol();
             $this->seguridad = new Seguridad();
@@ -139,9 +139,15 @@
             $this->vista->mostrar("usuario/gestionUsuarios", $data);
         }
 
-        public function gestionInstalaciones() {
-            $data["instalaciones"] = $this->instalacion->getAll();
-            $this->vista->mostrar("usuario/gestionInstalaciones", $data);
+        public function gestionInstalaciones($criterio = null) {
+
+            if ($criterio == null) {
+                $criterio = "id";
+            }
+
+            $data["instalaciones"] = $this->instalacion->getAll($criterio);
+            $this->vista->mostrar("instalacion/gestionInstalaciones", $data);
+
         }
         
         public function gestionReservas() {

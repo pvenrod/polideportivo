@@ -43,7 +43,7 @@
                 <td>
                     <div class='elemento no-linea'>
                         <p>No se ha encontrado ningún usuario.</p>
-                        <button class='nuevo-usuario'>Nuevo usuario</button>
+                        <button class='nuevo-usuario' onclick='$(\"#nuevo\").show();$(\"#fondo\").show()'>Nuevo usuario</button>
                     </div>
                 </td>
             </tr>";
@@ -121,7 +121,7 @@
         echo    "<tr>
                     <td style='position: relative' colspan='3'>
                         <div class='elemento no-linea' style='background-color: transparent;padding: 10px 0px 10px 0px;'>
-                            <button class='nuevo-usuario' onclick='$(\"#nuevo\").show();$(\"#fondo\").show()''>Nuevo usuario</button>
+                            <button class='nuevo-usuario' onclick='$(\"#nuevo\").show();$(\"#fondo\").show()'>Nuevo usuario</button>
                         </div>
                     </td>
                 </tr>

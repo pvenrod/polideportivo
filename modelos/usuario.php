@@ -6,10 +6,11 @@
     class Usuario {
 
         private $db, $seguridad;
-
+        
         /**
          * Constructor. Establece la conexión con la base de datos y la 
-         * guarda en una variable de clase.
+         * guarda en una variable de clase. Además, crea la variable seguridad, 
+         * que es una instancia de la clase Seguridad.
          */
         public function __construct() {
 
@@ -319,7 +320,5 @@
             return $result;
 
         }
-
-
 
     }
