@@ -19,9 +19,10 @@
                
     echo        "<input type='hidden' name='action' value='borrados'>
             </form>
-            <form action='index.php' method='post' id='ordenar'>
-                <select name='criterio' onchange='$(\"#ordenar\").submit()'>
+            <form action='index.php' method='get' id='ordenar'>
+                <select name='criterio' onchange='$(\"#ordenar\").submit()' id='criterio'>
                     <option value='id'>Ordenar por id</option>
+                    <option value='usuario'>Ordenar por usuario</option>
                     <option value='nombre'>Ordenar por nombre</option>
                     <option value='apellido1'>Ordenar por primer apellido</option>
                     <option value='apellido2'>Ordenar por segundo apellido</option>
@@ -75,11 +76,11 @@
                     
             echo            "<img src='img/usuarios/default.jpg' id='imagen$usuario->id'><br>
                         <form enctype='multipart/form-data' autocomplete='off' action='index.php' method='post'>
-                            <table>
+                            <table style='width: 70%'>
                                 <tr style='height: 10px;'></tr>
                                 <tr>
-                                    <th><strong>Usuario:</strong></th>
-                                    <td><input type='text' name='usuario' value='$usuario->usuario' readonly class='inputSinEscribir'></td>
+                                    <th style='width: 50%'><strong>Usuario:</strong></th>
+                                    <td style='width: 50%'><input type='text' name='usuario' value='$usuario->usuario' readonly class='inputSinEscribir'></td>
                                 </tr>
                                 <tr style='height: 10px;'></tr>
                                 <tr>
@@ -120,69 +121,92 @@
         echo    "<tr>
                     <td style='position: relative' colspan='3'>
                         <div class='elemento no-linea' style='background-color: transparent;padding: 10px 0px 10px 0px;'>
-                            <button class='nuevo-usuario' onclick='$(\"#nuevo\").show()'>Nuevo usuario</button>
+                            <button class='nuevo-usuario' onclick='$(\"#nuevo\").show();$(\"#fondo\").show()''>Nuevo usuario</button>
                         </div>
-                        <div class='elementoDetalles' id='nuevo' style='width: 50%'>
-                        <img src='img/usuarios/default.jpg'><br>
-                        <form enctype='multipart/form-data' autocomplete='off' action='index.php' method='post' id='formNuevo'>
-                            <table>
-                                <tr style='height: 10px;'></tr>
-                                <tr>
-                                    <th><strong>Usuario:</strong></th>
-                                    <td><input type='text' name='usuario' class='inputEscribir' id='nuevo-1'></td>
-                                </tr>
-                                <tr style='height: 10px;'></tr>
-                                <tr>
-                                    <th><strong>Email:</strong></th>
-                                    <td><input type='text' name='email' class='inputEscribir' id='nuevo-2'></td></td>
-                                </tr>
-                                <tr style='height: 10px;'></tr>
-                                <tr>
-                                    <th><strong>Nombre:</strong><br></th>
-                                    <td>
-                                        <input type='text' name='nombre' class='inputEscribir' id='nuevo-3'>
-                                    </td>
-                                </tr>
-                                <tr style='height: 10px;'></tr>
-                                <tr>
-                                    <th><strong>Primer apellido:</strong></th>
-                                    <td>
-                                        <input type='text' name='apellido1' class='inputEscribir' id='nuevo-4'>
-                                    </td>
-                                </tr>
-                                <tr style='height: 10px;'></tr>
-                                <tr>
-                                    <th><strong>Segundo apellido:</strong></th>
-                                    <td>
-                                        <input type='text' name='apellido2' class='inputEscribir' id='nuevo-5'>
-                                    </td>
-                                </tr>
-                                <tr style='height: 10px;'></tr>
-                                <tr>
-                                    <th><strong>DNI:</strong></th>
-                                    <td><input type='text' name='dni' class='inputEscribir' id='nuevo-6'></td>
-                                </tr>
-                                <tr style='height: 10px;'></tr>
-                                <tr id='trImagenNuevo'>
-                                    <th><strong>Imagen de perfil:</strong></th>
-                                    <td>
-                                        <input type='file' name='imagen' class='inputEscribir' id='nuevo-3'>
-                                    </td>
-                                </tr>
-                                <tr style='height: 10px;'></tr>
-                                <tr>
-                                    <th><button class='botonModificar'>Crear</button></th>
-                                    <td><button type='button' class='botonEliminar' onclick='$(\"#nuevo\").hide()'>Cancelar</button></td>
-                                </tr>
-                            </table>
-                            <input type='hidden' name='action' value='crearUsuario'>
-                        </form>
-                    </div>
                     </td>
                 </tr>
             </table>
         </div>
         <div id='fondo'></div>
+        <div class='nuevo-usuario-div' id='nuevo'>
+            <table class='tituloTablaPerfil'>
+                <tr>
+                    <td><span><strong>Información personal</strong></td>
+                </tr>
+            </table>
+            <table>
+                <form action='index.php' method='post' autocomplete='off' enctype='multipart/form-data'>
+                <tr style='height: 20px'></tr>
+                <tr>
+                    <td>
+                        <img src='img/usuarios/default.jpg'>
+                    </td>
+                    <td style='padding-left: 20px; padding-top: 20px;'>
+                        <table>
+                            <tr>
+                                <td>
+                                    Usuario:<br>
+                                    <input required type='text' id='usuario' name='usuario'>
+                                </td>
+                            </tr>
+                            <tr style='height: 10px'></tr>
+                            <tr>
+                                <td>
+                                    Nombre completo:<br>
+                                    <input required type='text' id='nombre' name='nombre'> <br>
+                                    <div style='height: 5px;'></div>
+                                    <input required type='text' id='apellido1' name='apellido1'><br>
+                                    <div style='height: 5px;'> </div>
+                                    <input type='text' id='apellido2' name='apellido2'>
+                                </td>
+                            </tr>
+                            <tr style='height: 10px''></tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr style='height: 20px'></tr>
+                <tr>
+                    <td>
+                        Email<br>
+                        <input required type='text' id='email' name='email'>           
+                    </td>
+                    <td style='padding-left: 20px;'>
+                        Contraseña<br>
+                        <input required type='password' id='contrasenya' name='contrasenya'>
+                    </td>
+                </tr>
+                <tr style='height: 20px'></tr>
+                <tr>
+                    <td>
+                        DNI<br>
+                        <input required type='text' id='dni' name='dni'>           
+                    </td>
+                    <td style='padding-left: 20px;'>
+                        Roles<br>
+                        <select name='roles[]' multiple>
+                            <option value='1'>Admin</option>
+                            <option value='2' selected>Estándar</option>
+                            <option value='3'>Deshabilitado</option>
+                        </select>
+                    </td>               
+                </tr>
+                <tr style='height: 20px'></tr>
+                <tr>
+                    <td colspan='2'>
+                        Imagen de perfil: <br>
+                        <img src='img/usuarios/default.jpg' style='width: 30px; height: 30px; box-shadow: none; vertical-align: middle'>
+                        <input type='file' name='imagen' id='imagen' title='Doble click para editar' onclick='activar(this.id)'>
+                    </td>
+                </tr>
+                <tr style='height: 20px'></tr>
+                <tr>
+                    <th><button class='botonModificar'>Crear</button></th>
+                    <td><button type='button' class='botonEliminar' onclick='$(\"#nuevo\").hide();$(\"#fondo\").hide()'>Cancelar</button></td>
+                </tr>
+                <input type='hidden' name='action' value='crearUsuario'>
+                </form>
+            </table>
+        </div>
         <div id='divConfirmacion'>
             <span>¿Estás seguro de que deseas eliminar este usuario?</span>
             <br>
@@ -221,5 +245,30 @@
                       });
                 }
             }
+
+            cambiarSelect = function() {";
+
+            if (isset($_REQUEST["criterio"])) {
+                    echo "var criterio ='" . $_REQUEST["criterio"] . "'";
+                } else {
+                    echo "var criterio = 'id'";
+                }
+                
+            echo "
+                var optionsCriterio = document.getElementById('criterio').getElementsByTagName('option');
+
+                for (i=0; i<optionsCriterio.length; i++) {
+                    if (optionsCriterio[i].value == criterio) {
+                        optionsCriterio[i].setAttribute('selected','selected')
+                        
+                    }
+                }
+
+                
+            }
+
+            setTimeout(cambiarSelect,10);
+
+
 
         </script>";

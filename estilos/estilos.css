@@ -270,6 +270,25 @@ body {
     border: 2px solid #2196F3;
 }
 
+.nuevo-usuario-div {
+    width: 500px;
+    top: 100px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgb(226, 226, 226);
+    border-radius: 10px;
+    padding-bottom: 40px;
+    display: none;
+}
+
+.nuevo-usuario-div table {
+    width: 80% !important;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .no-linea {
     text-decoration: none !important;
     cursor: default;
@@ -459,9 +478,10 @@ body {
 }
 
 #perfil {
-    margin-top: 20px;
-    padding: 20px;
     width: auto !important;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 #tablaPrincipal td {
@@ -472,19 +492,19 @@ body {
     padding: 20px;
 }
 
-#perfil img {
+#perfil img, .nuevo-usuario-div table img {
     width: 200px;
     height: 200px;
     border-radius: 100px;
     box-shadow: 0px 10px 10px black;
 }
 
-#perfil td {
+#perfil td, .nuevo-usuario-div table td {
     font-size: 20px;
     word-break: break-word;
 }
 
-#perfil td input {
+#perfil td input, .nuevo-usuario-div table td input {
     padding: 4px;
     outline: none;
 }
@@ -496,11 +516,22 @@ body {
     transform: translateX(-50%);
     background-color: rgb(226, 226, 226);
     border-radius: 10px;
+    padding-bottom: 40px;
 }
 
-#reservas {
+.tituloTablaPerfil {
     padding: 20px;
 }
-#reservas span {
+.tituloTablaPerfil span {
     font-size: 22px;
+}
+
+.oculto {
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 4px !important;
+    outline: none;
+}
+.oculto:focus {
+    background-color: transparent;
 }

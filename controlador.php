@@ -151,12 +151,43 @@
 
         // ==========================================================================================================
 
+        public function crearUsuario() {
 
+            $id = $this->usuario->getLastId();
+            $usuario = $_REQUEST["usuario"];
+            $contrasenya = $_REQUEST["contrasenya"];
+            $email = $_REQUEST["email"];
+            $nombre = $_REQUEST["nombre"];
+            $apellido1 = $_REQUEST["apellido1"];
+            $apellido2 = $_REQUEST["apellido2"];
+            $dni = $_REQUEST["dni"];
+            $imagen = $_FILES["imagen"];
+            $borrado = 'no';
+            $roles = $_REQUEST["roles"];
 
-        public function perfil() {
+            if ($this->usuario->add($id,$usuario,$contrasenya,$email,$nombre,$apellido1,$apellido2,$dni,$imagen,$borrado,$roles) > 1) {
+                $this->perfil($id);
+            } else {
+                echo "<script>
+                        i=5;
+                            setInterval(function() {
+                                if (i==0) {
+                                    location.href='index.php';
+                                }
+                            document.body.innerHTML = 'Ha ocurrido un error. Redireccionando en ' + i;
+                                i--;
+                            },1000);
+                    </script>";
+            }
 
-            $id = $_REQUEST["id"];
+        }
 
+        public function perfil($id = null) {
+
+            if (!isset($id)) {
+                $id = $_REQUEST["id"];
+            }
+        
             $data["todosLosRoles"] = $this->rol->getAll();
             $data["rolesUsuario"] = $this->rol->get($id);
             $data["usuario"] = $this->usuario->get($id);
@@ -168,15 +199,17 @@
 
             $id = $_REQUEST["id"];
             $usuario = $_REQUEST["usuario"];
+            $contrasenya = $_REQUEST["contrasenya"];
             $email = $_REQUEST["email"];
             $nombre = $_REQUEST["nombre"];
             $apellido1 = $_REQUEST["apellido1"];
             $apellido2 = $_REQUEST["apellido2"];
             $dni = $_REQUEST["dni"];
             $imagen = $_FILES["imagen"];
+            $roles = $_REQUEST["roles"];
 
-            if ($this->usuario->update($id,$usuario,$email,$nombre,$apellido1,$apellido2,$dni,$imagen) > 0) {
-                $this->gestionUsuarios();
+            if ($this->usuario->update($id,$usuario,$contrasenya,$email,$nombre,$apellido1,$apellido2,$dni,$imagen,$roles) > 1) {
+                $this->perfil($id);
             } else {
                 echo "<script>
                         i=5;
@@ -196,6 +229,15 @@
 
             $id = $_REQUEST["id"];
             $this->usuario->delete($id);
+
+            $this->gestionUsuarios();
+
+        }
+
+        public function activarUsuario() {
+
+            $id = $_REQUEST["id"];
+            $this->usuario->activate($id);
 
             $this->gestionUsuarios();
 
@@ -237,7 +279,7 @@
 
             $id = $_REQUEST["id"];
 
-            echo $this->usuario->getImagen($id);
+            echo $this->usuario->getCampo($id,'imagen');
 
         }
 
