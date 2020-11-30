@@ -1,7 +1,6 @@
 <?php
 
     $usuario = $data["usuario"][0];
-    $reservas = $data["reservas"];
 
     echo "<div id='divContenedor'>
             <span id='titulo'>Perfil de $usuario->usuario</span>
@@ -122,22 +121,6 @@
                                         <td><span>Reservas de <strong>$usuario->usuario</strong></td>
                                     </tr>
                                 </table>
-                                <table id='tablaReservasPerfil'>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Fecha</th>
-                                        <th>Hora</th>
-                                        <th>Precio</th>
-                                    </tr>";
-                                        foreach ($reservas as $reserva) {
-                                            echo "<tr>
-                                                    <td>$reserva->id</td>
-                                                    <td>$reserva->fecha</td>
-                                                    <td>$reserva->hora</td>
-                                                    <td>$reserva->precio €</td>
-                                                </tr>";
-                                        }
-        echo                    "</table>
                             </div>
                         </td>
                     </tr>

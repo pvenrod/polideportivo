@@ -140,7 +140,7 @@
         }
 
         public function gestionInstalaciones() {
-            //$data["instalaciones"] = $this->instalacion->getAll();
+            $data["instalaciones"] = $this->instalacion->getAll();
             $this->vista->mostrar("usuario/gestionInstalaciones", $data);
         }
         
@@ -163,7 +163,11 @@
             $dni = $_REQUEST["dni"];
             $imagen = $_FILES["imagen"];
             $borrado = 'no';
-            $roles = $_REQUEST["roles"];
+            if (isset($_REQUEST["roles"])) {
+                $roles = $_REQUEST["roles"];
+            } else {
+                $roles = array("2");
+            }
 
             if ($this->usuario->add($id,$usuario,$contrasenya,$email,$nombre,$apellido1,$apellido2,$dni,$imagen,$borrado,$roles) > 1) {
                 $this->perfil($id);
@@ -191,6 +195,7 @@
             $data["todosLosRoles"] = $this->rol->getAll();
             $data["rolesUsuario"] = $this->rol->get($id);
             $data["usuario"] = $this->usuario->get($id);
+            $data["reservas"] = $this->usuario->getReservas($id);
             $this->vista->mostrar("usuario/perfil",$data);
 
         }
@@ -206,7 +211,12 @@
             $apellido2 = $_REQUEST["apellido2"];
             $dni = $_REQUEST["dni"];
             $imagen = $_FILES["imagen"];
-            $roles = $_REQUEST["roles"];
+            if (isset($_REQUEST["roles"])) {
+                $roles = $_REQUEST["roles"];
+            } else {
+                $roles = array("2");
+            }
+            
 
             if ($this->usuario->update($id,$usuario,$contrasenya,$email,$nombre,$apellido1,$apellido2,$dni,$imagen,$roles) > 1) {
                 $this->perfil($id);

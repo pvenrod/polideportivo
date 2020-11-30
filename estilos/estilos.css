@@ -535,3 +535,14 @@ body {
 .oculto:focus {
     background-color: transparent;
 }
+
+#tablaReservasPerfil {
+    width: 80% !important;
+    text-align: center;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#tablaReservasPerfil td {
+    width: 25% !important;
+}
