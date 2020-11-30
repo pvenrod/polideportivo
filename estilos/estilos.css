@@ -160,6 +160,30 @@ body {
     margin-left: 20px;
 }
 
+#ordenar {
+    display: inline;
+}
+
+#ordenar select {
+    position: absolute;
+    right: 23%;
+    top: 18px;
+    padding: 5px;
+    outline: none;
+    border: 1px solid rgb(155, 155, 155);
+    border-radius: 4px;
+    color: grey;
+}
+
+#borrados {
+    display: inline;
+    position: absolute;
+    right: 45%;
+}
+#borrados input {
+    cursor: pointer;
+}
+
 #buscador {
     display: inline;
 }
@@ -173,9 +197,11 @@ body {
     border: 1px solid rgb(155, 155, 155);
     border-radius: 4px;
 }
-#buscador input:focus {
-    background-color: rgb(240, 251, 255);
+#buscador input:focus: {
     box-shadow: 0px 5px 5px rgb(228, 228, 228);
+}
+#buscador input:focus::placeholder {
+    color: white;
 }
 
 #buscador button {
@@ -201,6 +227,10 @@ body {
     width: 100%;
 }   
 
+#divContenedor table td {
+    width: 33%;
+}
+
 .elemento {
     width: 80%;
     background-color: rgb(238, 238, 238);
@@ -213,6 +243,10 @@ body {
     text-align: center;
     text-decoration: underline;
     cursor: pointer;
+}
+
+.elementoBorrado {
+    background-color: rgb(253, 191, 191) !important;
 }
 
 .nuevo-usuario {
@@ -243,6 +277,7 @@ body {
 
 .elementoDetalles {
     width: 80%;
+    margin-top: -10px;
     background-color: rgb(238, 238, 238);
     height: auto;
     padding: 20px;
@@ -251,7 +286,7 @@ body {
     transform: translateX(-50%);
     z-index: 20;
     border-radius: 10px;
-    box-shadow: 0px 10px 10px black;
+    box-shadow: 0px 10px 8px black;
     text-align: center;
     display: none;
 }
@@ -321,7 +356,7 @@ body {
     width: 100%;
 }
 .botonGuardar:hover {
-    background-color: #228a39;
+    background-color: #27973f;
 }
 
 .botonEliminar {
@@ -336,7 +371,7 @@ body {
     width: 100%;
 }
 .botonEliminar:hover {
-    background-color: #b11111;
+    background-color: #a71010;
 }
 
 #botonDefinitivo {
@@ -421,4 +456,51 @@ body {
 }
 #botonCancelar:hover {
     background-color: #ac2121;
+}
+
+#perfil {
+    margin-top: 20px;
+    padding: 20px;
+    width: auto !important;
+}
+
+#tablaPrincipal td {
+    width: 50% !important;
+    vertical-align: top;
+}
+#tablaPrincipal {
+    padding: 20px;
+}
+
+#perfil img {
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+    box-shadow: 0px 10px 10px black;
+}
+
+#perfil td {
+    font-size: 20px;
+    word-break: break-word;
+}
+
+#perfil td input {
+    padding: 4px;
+    outline: none;
+}
+
+.perfilInfo, .perfilReservas {
+    width: 90%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgb(226, 226, 226);
+    border-radius: 10px;
+}
+
+#reservas {
+    padding: 20px;
+}
+#reservas span {
+    font-size: 22px;
 }

@@ -4,7 +4,32 @@
 
     echo "<div id='divContenedor'>
             <span id='titulo'>GESTIÓN DE USUARIOS</span>
-            <form action='index.php' method='post' id='buscador'>
+            <form action='index.php' method='post' id='borrados'>";
+
+                if (isset($data["borrados"])) {
+                    if ($data["borrados"] == "on") {
+                        echo "<input type='checkbox' name='borrados' onclick='$(\"#borrados\").submit()' checked> Mostrar borrados";
+                    } else {
+                        echo "<input type='checkbox' name='borrados' onclick='$(\"#borrados\").submit()'> Mostrar borrados";
+                    }
+                } else {
+                    echo "<input type='checkbox' name='borrados' onclick='$(\"#borrados\").submit()'> Mostrar borrados";
+                }
+
+               
+    echo        "<input type='hidden' name='action' value='borrados'>
+            </form>
+            <form action='index.php' method='post' id='ordenar'>
+                <select name='criterio' onchange='$(\"#ordenar\").submit()'>
+                    <option value='id'>Ordenar por id</option>
+                    <option value='nombre'>Ordenar por nombre</option>
+                    <option value='apellido1'>Ordenar por primer apellido</option>
+                    <option value='apellido2'>Ordenar por segundo apellido</option>
+                    <option value='dni'>Ordenar por DNI</option>
+                </select>
+                <input type='hidden' name='action' value='ordenar'>
+            </form>
+            <form action='index.php' method='post' id='buscador' autocomplete='off'>
                 <input type='text' name='texto' placeholder='Usuario, nombre, DNI...'>
                 <input type='hidden' name='action' value='buscarUsuario'>
                 <button><img src='img/lupa.png'></button>
@@ -30,12 +55,25 @@
                 echo "<tr>";
             }
     
-            echo "<td style='position:relative'>
-                    <div class='elemento' onclick='perfil($usuario->id)' onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide()' onmouseout='$(\"#$usuario->id\").hide()'>
-                        <span onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide()' >$usuario->usuario</span>
-                    </div>
-                    <div class='elementoDetalles' id='$usuario->id' onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide()' onmouseout='$(\"#$usuario->id\").hide()'>
-                        <img src='$usuario->imagen'><br>
+            echo "<td style='position:relative'>";
+
+            if ($usuario->borrado == "si") {
+                echo "<div class='elemento elementoBorrado' onclick='perfil($usuario->id)' onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide();cargarImagen($usuario->id)' onmouseout='$(\"#$usuario->id\").hide()'>";
+            } else {
+                echo "<div class='elemento' onclick='perfil($usuario->id)' onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide();cargarImagen($usuario->id)' onmouseout='$(\"#$usuario->id\").hide()'>";
+            }
+                    
+            echo        "<span onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide();cargarImagen($usuario->id)' >$usuario->usuario</span>
+                    </div>";
+
+            if ($usuario->borrado == "si") {
+                echo "<div class='elementoDetalles elementoBorrado' id='$usuario->id' onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide()' onmouseout='$(\"#$usuario->id\").hide()'>";
+            } else {
+                echo "<div class='elementoDetalles' id='$usuario->id' onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide()' onmouseout='$(\"#$usuario->id\").hide()'>";
+            }
+
+                    
+            echo            "<img src='img/usuarios/default.jpg' id='imagen$usuario->id'><br>
                         <form enctype='multipart/form-data' autocomplete='off' action='index.php' method='post'>
                             <table>
                                 <tr style='height: 10px;'></tr>
@@ -174,6 +212,14 @@
                 
                 $('#fondo').show();
                 $('#divConfirmacion').show();
+            }
+
+            function cargarImagen(id) {
+                if ($('#imagen'+id).attr('src') == 'img/usuarios/default.jpg') {
+                    $.get('index.php?action=cargarImagen&id='+id, function( data ) {
+                        $('#imagen'+id).attr('src',data);
+                      });
+                }
             }
 
         </script>";

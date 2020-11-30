@@ -123,10 +123,19 @@
 
         // ======================================= FUNCIONES DE GESTIÓN DE USUARIOS, INSTALACIONES Y RESERVAS
 
-        public function gestionUsuarios() {
-            $data["usuarios"] = $this->usuario->getAll();
-            $data["todosLosRoles"] = $this->rol->getAll();
-            $data["rolesUsuario"] = $this->rol->get($this->seguridad->get("id"));
+        public function gestionUsuarios($criterio = null,$mostrarBorrados = null) {
+
+            if ($criterio == null) {
+                $criterio = "id";
+            }
+            if ($mostrarBorrados == "on") {
+                $criterio2 = "";
+            } else {
+                $criterio2 = "WHERE NOT borrado = 'si'";
+            }
+
+            $data["usuarios"] = $this->usuario->getAll($criterio,$criterio2);
+            $data["borrados"] = $mostrarBorrados;
             $this->vista->mostrar("usuario/gestionUsuarios", $data);
         }
 
@@ -148,13 +157,12 @@
 
             $id = $_REQUEST["id"];
 
+            $data["todosLosRoles"] = $this->rol->getAll();
+            $data["rolesUsuario"] = $this->rol->get($id);
             $data["usuario"] = $this->usuario->get($id);
             $this->vista->mostrar("usuario/perfil",$data);
 
         }
-
-
-
 
         public function modificarUsuario() {
 
@@ -189,6 +197,8 @@
             $id = $_REQUEST["id"];
             $this->usuario->delete($id);
 
+            $this->gestionUsuarios();
+
         }
 
         public function buscarUsuario() {
@@ -197,6 +207,37 @@
 
             $data["usuarios"] = $this->usuario->busqueda($texto);
             $this->vista->mostrar("usuario/gestionUsuarios", $data);
+
+        }
+
+        public function ordenar() {
+
+            $criterio = $_REQUEST["criterio"];
+
+            $this->gestionUsuarios($criterio);
+
+        }
+
+        public function borrados() {
+
+            $mostrarBorrados = "";
+
+            if (isset($_REQUEST["borrados"])) {
+                $mostrarBorrados = $_REQUEST["borrados"];
+            }
+            
+
+            $this->gestionUsuarios(null,$mostrarBorrados);
+            
+        }
+
+
+        //FUNCIONES PARA AJAX
+        public function cargarImagen() {
+
+            $id = $_REQUEST["id"];
+
+            echo $this->usuario->getImagen($id);
 
         }
 

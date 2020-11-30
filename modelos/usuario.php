@@ -67,10 +67,12 @@
          * Función que devuelve todos los usuarios.
          * @return Un objeto con todos los datos de todos los usuarios extraídos de la BD, o null en caso de error.
          */
-        public function getAll() {
+        public function getAll($criterio,$criterio2) {
 
             $result = $this->db->consulta("SELECT *
-                                            FROM poliusuarios");
+                                            FROM poliusuarios
+                                            $criterio2
+                                            ORDER BY $criterio ASC");
 
             return $result;
 
@@ -206,7 +208,7 @@
             $result = $this->db->consulta("SELECT *
                                             FROM poliusuarios
                                             WHERE 
-                                                usuario LIKE '%$texto%'
+                                                (usuario LIKE '%$texto%'
                                                 OR
                                                 email LIKE '%$texto%'
                                                 OR
@@ -216,9 +218,22 @@
                                                 OR
                                                 apellido2 LIKE '%$texto%'
                                                 OR
-                                                dni LIKE '%$texto%'");
+                                                dni LIKE '%$texto%')
+                                                AND
+                                                NOT borrado = 'si'");
             
             return $result;
+
+        }
+
+
+        public function getImagen($id) {
+
+            $result = $this->db->consulta("SELECT imagen
+                                            FROM poliusuarios
+                                            WHERE id = '$id'");
+
+            return $result[0]->imagen;
 
         }
 
