@@ -35,10 +35,6 @@
     
                     }
 
-                } else {
-
-                    $arrayResult = false;
-
                 }
                 
             }

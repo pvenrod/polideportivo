@@ -3,13 +3,14 @@
     include_once("vista.php");
     include_once("modelos/usuario.php");
     //include_once("modelos/reserva.php");
-    //include_once("modelos/instalacion.php");
+    include_once("modelos/instalacion.php");
     //include_once("modelos/horarioInstalacion.php");
+    include_once("modelos/rol.php");
     include_once("modelos/seguridad.php");
 
     class Controlador {
 
-        private $vista, $usuario, $reserva, $instalacion, $horarioInstalacion;
+        private $vista, $usuario, $reserva, $instalacion, $horarioInstalacion, $rol;
 
         /**
          * Constructor. Crea las variables de los modelos y la vista
@@ -19,8 +20,9 @@
             $this->vista = new Vista();
             $this->usuario = new Usuario();
             //$this->reserva = new Reserva();
-            //$this->instalacion = new Instalacion();
+            $this->instalacion = new Instalacion();
             //$this->horarioInstalacion = new HorarioInstalacion();
+            $this->rol = new Rol();
             $this->seguridad = new Seguridad();
 
         }
@@ -121,14 +123,31 @@
 
         // ======================================= FUNCIONES DE GESTIÓN DE USUARIOS, INSTALACIONES Y RESERVAS
 
-        public function gestionUsuarios() {
-            $data["usuarios"] = $this->usuario->getAll();
+        public function gestionUsuarios($criterio = null,$mostrarBorrados = null) {
+
+            if ($criterio == null) {
+                $criterio = "id";
+            }
+            if ($mostrarBorrados == "on") {
+                $criterio2 = "";
+            } else {
+                $criterio2 = "WHERE NOT borrado = 'si'";
+            }
+
+            $data["usuarios"] = $this->usuario->getAll($criterio,$criterio2);
+            $data["borrados"] = $mostrarBorrados;
             $this->vista->mostrar("usuario/gestionUsuarios", $data);
         }
 
-        public function gestionInstalaciones() {
-            //$data["instalaciones"] = $this->instalacion->getAll();
-            $this->vista->mostrar("usuario/gestionInstalaciones", $data);
+        public function gestionInstalaciones($criterio = null) {
+
+            if ($criterio == null) {
+                $criterio = "id";
+            }
+
+            $data["instalaciones"] = $this->instalacion->getAll($criterio);
+            $this->vista->mostrar("instalacion/gestionInstalaciones", $data);
+
         }
         
         public function gestionReservas() {
@@ -138,25 +157,26 @@
 
         // ==========================================================================================================
 
+        public function crearUsuario() {
 
-
-
-
-
-
-        public function modificarUsuario() {
-
-            $id = $_REQUEST["id"];
+            $id = $this->usuario->getLastId();
             $usuario = $_REQUEST["usuario"];
+            $contrasenya = $_REQUEST["contrasenya"];
             $email = $_REQUEST["email"];
             $nombre = $_REQUEST["nombre"];
             $apellido1 = $_REQUEST["apellido1"];
             $apellido2 = $_REQUEST["apellido2"];
             $dni = $_REQUEST["dni"];
             $imagen = $_FILES["imagen"];
+            $borrado = 'no';
+            if (isset($_REQUEST["roles"])) {
+                $roles = $_REQUEST["roles"];
+            } else {
+                $roles = array("2");
+            }
 
-            if ($this->usuario->update($id,$usuario,$email,$nombre,$apellido1,$apellido2,$dni,$imagen) > 0) {
-                $this->gestionUsuarios();
+            if ($this->usuario->add($id,$usuario,$contrasenya,$email,$nombre,$apellido1,$apellido2,$dni,$imagen,$borrado,$roles) > 1) {
+                $this->perfil($id);
             } else {
                 echo "<script>
                         i=5;
@@ -172,12 +192,110 @@
 
         }
 
+        public function perfil($id = null) {
+
+            if (!isset($id)) {
+                $id = $_REQUEST["id"];
+            }
+        
+            $data["todosLosRoles"] = $this->rol->getAll();
+            $data["rolesUsuario"] = $this->rol->get($id);
+            $data["usuario"] = $this->usuario->get($id);
+            $data["reservas"] = $this->usuario->getReservas($id);
+            $this->vista->mostrar("usuario/perfil",$data);
+
+        }
+
+        public function modificarUsuario() {
+
+            $id = $_REQUEST["id"];
+            $usuario = $_REQUEST["usuario"];
+            $contrasenya = $_REQUEST["contrasenya"];
+            $email = $_REQUEST["email"];
+            $nombre = $_REQUEST["nombre"];
+            $apellido1 = $_REQUEST["apellido1"];
+            $apellido2 = $_REQUEST["apellido2"];
+            $dni = $_REQUEST["dni"];
+            $imagen = $_FILES["imagen"];
+            if (isset($_REQUEST["roles"])) {
+                $roles = $_REQUEST["roles"];
+            } else {
+                $roles = array("2");
+            }
+            
+
+            if ($this->usuario->update($id,$usuario,$contrasenya,$email,$nombre,$apellido1,$apellido2,$dni,$imagen,$roles) > 1) {
+                $this->perfil($id);
+            } else {
+                echo "<script>
+                        i=5;
+                            setInterval(function() {
+                                if (i==0) {
+                                    location.href='index.php';
+                                }
+                            document.body.innerHTML = 'Ha ocurrido un error. Redireccionando en ' + i;
+                                i--;
+                            },1000);
+                    </script>";
+            }
+
+        }
+
+        public function eliminarUsuario() {
+
+            $id = $_REQUEST["id"];
+            $this->usuario->delete($id);
+
+            $this->gestionUsuarios();
+
+        }
+
+        public function activarUsuario() {
+
+            $id = $_REQUEST["id"];
+            $this->usuario->activate($id);
+
+            $this->gestionUsuarios();
+
+        }
+
         public function buscarUsuario() {
 
             $texto = $_REQUEST["texto"];
 
             $data["usuarios"] = $this->usuario->busqueda($texto);
             $this->vista->mostrar("usuario/gestionUsuarios", $data);
+
+        }
+
+        public function ordenar() {
+
+            $criterio = $_REQUEST["criterio"];
+
+            $this->gestionUsuarios($criterio);
+
+        }
+
+        public function borrados() {
+
+            $mostrarBorrados = "";
+
+            if (isset($_REQUEST["borrados"])) {
+                $mostrarBorrados = $_REQUEST["borrados"];
+            }
+            
+
+            $this->gestionUsuarios(null,$mostrarBorrados);
+            
+        }
+
+
+        //FUNCIONES PARA AJAX
+        public function cargarImagen() {
+
+            $id = $_REQUEST["id"];
+
+            echo $this->usuario->getCampo($id,'imagen');
 
         }
 

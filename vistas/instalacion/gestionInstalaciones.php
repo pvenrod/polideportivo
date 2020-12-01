@@ -3,106 +3,79 @@
     $contador = 0;
 
     echo "<div id='divContenedor'>
-            <span id='titulo'>GESTIÓN DE USUARIOS</span>
-            <form action='index.php' method='post' id='borrados'>";
-
-                if (isset($data["borrados"])) {
-                    if ($data["borrados"] == "on") {
-                        echo "<input type='checkbox' name='borrados' onclick='$(\"#borrados\").submit()' checked> Mostrar borrados";
-                    } else {
-                        echo "<input type='checkbox' name='borrados' onclick='$(\"#borrados\").submit()'> Mostrar borrados";
-                    }
-                } else {
-                    echo "<input type='checkbox' name='borrados' onclick='$(\"#borrados\").submit()'> Mostrar borrados";
-                }
-
-               
-    echo        "<input type='hidden' name='action' value='borrados'>
-            </form>
+            <span id='titulo'>GESTIÓN DE INSTALACIONES</span>
             <form action='index.php' method='get' id='ordenar'>
                 <select name='criterio' onchange='$(\"#ordenar\").submit()' id='criterio'>
                     <option value='id'>Ordenar por id</option>
-                    <option value='usuario'>Ordenar por usuario</option>
                     <option value='nombre'>Ordenar por nombre</option>
-                    <option value='apellido1'>Ordenar por primer apellido</option>
-                    <option value='apellido2'>Ordenar por segundo apellido</option>
-                    <option value='dni'>Ordenar por DNI</option>
+                    <option value='precioHora'>Ordenar por precio/hora</option>
                 </select>
                 <input type='hidden' name='action' value='ordenar'>
             </form>
             <form action='index.php' method='post' id='buscador' autocomplete='off'>
-                <input type='text' name='texto' placeholder='Usuario, nombre, DNI...'>
+                <input type='text' name='texto' placeholder='Nombre, descripción...'>
                 <input type='hidden' name='action' value='buscarUsuario'>
                 <button><img src='img/lupa.png'></button>
             </form>
             <table>";
 
-    if (count($data["usuarios"]) == 0) {
+    if (count($data["instalaciones"]) == 0) {
 
         echo "<tr>
                 <td>
                     <div class='elemento no-linea'>
-                        <p>No se ha encontrado ningún usuario.</p>
-                        <button class='nuevo-usuario' onclick='$(\"#nuevo\").show();$(\"#fondo\").show()'>Nuevo usuario</button>
+                        <p>No se ha encontrado ninguna instalación.</p>
+                        <button class='nuevo-usuario'>Nueva instalación</button>
                     </div>
                 </td>
             </tr>";
 
     } else {
 
-        foreach ($data["usuarios"] as $usuario) {
+        foreach ($data["instalaciones"] as $instalacion) {
 
             if ($contador % 3 == 0) {
                 echo "<tr>";
             }
     
-            echo "<td style='position:relative'>";
-
-            if ($usuario->borrado == "si") {
-                echo "<div class='elemento elementoBorrado' onclick='perfil($usuario->id)' onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide();cargarImagen($usuario->id)' onmouseout='$(\"#$usuario->id\").hide()'>";
-            } else {
-                echo "<div class='elemento' onclick='perfil($usuario->id)' onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide();cargarImagen($usuario->id)' onmouseout='$(\"#$usuario->id\").hide()'>";
-            }
-                    
-            echo        "<span onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide();cargarImagen($usuario->id)' >$usuario->usuario</span>
-                    </div>";
-
-            if ($usuario->borrado == "si") {
-                echo "<div class='elementoDetalles elementoBorrado' id='$usuario->id' onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide()' onmouseout='$(\"#$usuario->id\").hide()'>";
-            } else {
-                echo "<div class='elementoDetalles' id='$usuario->id' onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide()' onmouseout='$(\"#$usuario->id\").hide()'>";
-            }
-
-                    
-            echo            "<img src='img/usuarios/default.jpg' id='imagen$usuario->id'><br>
-                        <form enctype='multipart/form-data' autocomplete='off' action='index.php' method='post'>
-                            <table style='width: 70%'>
-                                <tr style='height: 10px;'></tr>
-                                <tr>
-                                    <th style='width: 50%'><strong>Usuario:</strong></th>
-                                    <td style='width: 50%'><input type='text' name='usuario' value='$usuario->usuario' readonly class='inputSinEscribir'></td>
-                                </tr>
-                                <tr style='height: 10px;'></tr>
-                                <tr>
-                                    <th><strong>Email:</strong></th>
-                                    <td><input type='text' name='email' value='$usuario->email' readonly class='inputSinEscribir'></td></td>
-                                </tr>
-                                <tr style='height: 10px;'></tr>
-                                <tr id='trImagen$usuario->id' style='display: none'>
-                                    <th><strong>Imagen de perfil:</strong></th>
-                                    <td>
-                                        <input type='file' name='imagen' class='inputSinEscribir' id='$usuario->id-3'>
-                                    </td>
-                                </tr>
-                                <tr style='height: 10px;'></tr>
-                                <tr>
-                                    <th><button type='button' class='botonModificar' onclick='perfil($usuario->id)'>Ver perfil</button></th>
-                                    <td><button type='button' class='botonEliminar' onclick='eliminar($usuario->id)'>Eliminar</button></td>
-                                </tr>
-                            </table>
-                            <input type='hidden' name='action' value='modificarUsuario'>
-                            <input type='hidden' name='id' value='$usuario->id'>
-                        </form>
+            echo "<td style='position:relative'>
+                    <div class='elemento' onclick='perfil($instalacion->id)' onmouseover='$(\"#$instalacion->id\").show();$(\"#nuevo\").hide();cargarImagen($instalacion->id)' onmouseout='$(\"#$instalacion->id\").hide()'>
+                        <span onmouseover='$(\"#$instalacion->id\").show();$(\"#nuevo\").hide();cargarImagen($instalacion->id)' >$instalacion->nombre</span>
+                    </div>
+                    <div class='elementoDetalles' id='$instalacion->id' onmouseover='$(\"#$instalacion->id\").show();$(\"#nuevo\").hide()' onmouseout='$(\"#$instalacion->id\").hide()'>
+                        <img src='img/instalaciones/default.jpg'><br>
+                            <form enctype='multipart/form-data' autocomplete='off' action='index.php' method='post'>
+                                <table style='width: 70%'>
+                                    <tr style='height: 10px;'></tr>
+                                    <tr>
+                                        <th style='width: 50%'><strong>Nombre:</strong></th>
+                                        <td style='width: 50%'><input type='text' name='usuario' value='$instalacion->nombre' readonly class='inputSinEscribir'></td>
+                                    </tr>
+                                    <tr style='height: 10px;'></tr>
+                                    <tr>
+                                        <th><strong>Descripción:</strong></th>
+                                        <td>
+                                            <textarea readonly class='inputSinEscribir'>
+                                                $instalacion->descripcion
+                                            </textarea>
+                                        </td>
+                                    </tr>
+                                    <tr style='height: 10px;'></tr>
+                                    <tr id='trImagen$instalacion->id' style='display: none'>
+                                        <th><strong>Imagen de perfil:</strong></th>
+                                        <td>
+                                            <input type='file' name='imagen' class='inputSinEscribir' id='$instalacion->id-3'>
+                                        </td>
+                                    </tr>
+                                    <tr style='height: 10px;'></tr>
+                                    <tr>
+                                        <th><button type='button' class='botonModificar' onclick='perfil($instalacion->id)'>Ver perfil</button></th>
+                                        <td><button type='button' class='botonEliminar' onclick='eliminar($instalacion->id)'>Eliminar</button></td>
+                                    </tr>
+                                </table>
+                                <input type='hidden' name='action' value='modificarUsuario'>
+                                <input type='hidden' name='id' value='$instalacion->id'>
+                            </form>
                     </div>
                 </td>";
     
@@ -121,7 +94,7 @@
         echo    "<tr>
                     <td style='position: relative' colspan='3'>
                         <div class='elemento no-linea' style='background-color: transparent;padding: 10px 0px 10px 0px;'>
-                            <button class='nuevo-usuario' onclick='$(\"#nuevo\").show();$(\"#fondo\").show()'>Nuevo usuario</button>
+                            <button class='nuevo-usuario' onclick='$(\"#nuevo\").show();$(\"#fondo\").show()''>Nueva instalación</button>
                         </div>
                     </td>
                 </tr>
@@ -240,7 +213,7 @@
 
             function cargarImagen(id) {
                 if ($('#imagen'+id).attr('src') == 'img/usuarios/default.jpg') {
-                    $.get('index.php?action=cargarImagen&id='+id, function( data ) {
+                    $.get('index.php?action=cargarImagenInstalacion&id='+id, function( data ) {
                         $('#imagen'+id).attr('src',data);
                       });
                 }

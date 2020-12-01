@@ -6,10 +6,11 @@
     class Usuario {
 
         private $db, $seguridad;
-
+        
         /**
          * Constructor. Establece la conexión con la base de datos y la 
-         * guarda en una variable de clase.
+         * guarda en una variable de clase. Además, crea la variable seguridad, 
+         * que es una instancia de la clase Seguridad.
          */
         public function __construct() {
 
@@ -63,50 +64,62 @@
 
         }
 
+
         /**
          * Función que devuelve todos los usuarios.
          * @return Un objeto con todos los datos de todos los usuarios extraídos de la BD, o null en caso de error.
          */
-        public function getAll() {
+        public function getAll($criterio,$criterio2) {
 
             $result = $this->db->consulta("SELECT *
-                                            FROM poliusuarios");
+                                            FROM poliusuarios
+                                            $criterio2
+                                            ORDER BY $criterio ASC");
 
             return $result;
 
         }
 
-        
+
         /**
-         * Función para registrar nuevos usuarios.
-         * @param usuario El nombre de usuario.
-         * @param email El email del usuario.
-         * @param contrasenya La contraseña del usuario.
-         * @param contrasenya2 La confirmación de la contraseña.
-         * @return 1 en caso de éxito, y 0 en caso de error.
+         * Función para crear nuevos usuarios.
+         * @param id Es el id del usuario a actualizar.
+         * @param usuario Es el nombre de usuario del usuario a actualizar.
+         * @param email Es el nuevo email del usuario a actualizar.
+         * @param contrasenya Es la nueva contraseña del usuario a actualizar.
+         * @param nombre Es el nombre del usuario a actualizar
+         * @param apellido1 Es el primer apellido del usuario a actualizar.
+         * @param apellido2 Es el segundo apellido del usuario a actualizar.
+         * @param dni Es el dni del usuario a actualizar.
+         * @param imagen Es la imagen del usuario a actualizar.
+         * @return 2 en caso de éxito, y <2 en caso de error.
          */
-        public function insert($usuario, $email, $contrasenya1, $contrasenya2) {
+        public function add($id,$usuario,$contrasenya,$email,$nombre,$apellido1,$apellido2,$dni,$imagen,$borrado,$roles) {
 
-            $result = 0;
 
-            $id = $this->db->consulta("SELECT IFNULL(MAX(id), 0) + 1 as id
-                                        FROM poliusuarios")[0]->id; // Saco el nuevo id para el usuario
-            $usuario;
-            $email;
-            $contrasenya1;
-            $contrasenya2;
-            $foto = "img/imagen.png";
-            $rol = "desactivado";
+            if ($imagen["error"] == 4) { // Si no se ha introducido ninguna imagen, no la actualizamos en la bd.
 
-            if ($contrasenya1 == $contrasenya2) {
+                $rutaImagen = "img/usuarios/default.jpg";                
 
-                $result = $this->db->modificacion("INSERT INTO poliusuarios
-                                                    VALUES
-                                                        ('$id', '$usuario', '$email', '$contrasenya1', '$foto', '$rol')");
+            } else {
+
+                $rutaImagen = 'img/usuarios/' . $usuario . "." . pathinfo($imagen["name"], PATHINFO_EXTENSION);
+                move_uploaded_file($imagen["tmp_name"],$rutaImagen);
 
             }
 
-            return $result;
+            $result = $this->db->modificacion("INSERT INTO poliusuarios
+                                               VALUES ('$id','$usuario','$contrasenya','$email','$nombre','$apellido1','$apellido2','$dni','$rutaImagen','$borrado')");
+
+            foreach($roles as $rol) {
+
+                $result2 = $this->db->modificacion("INSERT INTO poliusuariosroles
+                                                    VALUES
+                                                        ('$id','$rol')");
+
+            }
+
+            return $result + $result2;
 
         }
 
@@ -117,49 +130,63 @@
          * @param usuario Es el nombre de usuario del usuario a actualizar.
          * @param email Es el nuevo email del usuario a actualizar.
          * @param contrasenya Es la nueva contraseña del usuario a actualizar.
-         * @param rol Es el rol del usuario a actualizar.
-         * @return 1 en caso de éxito, y 0 en caso de error.
+         * @param nombre Es el nombre del usuario a actualizar
+         * @param apellido1 Es el primer apellido del usuario a actualizar.
+         * @param apellido2 Es el segundo apellido del usuario a actualizar.
+         * @param dni Es el dni del usuario a actualizar.
+         * @param imagen Es la imagen del usuario a actualizar.
+         * @return 2 en caso de éxito, y <2 en caso de error.
          */
-        public function update($id,$usuario,$email,$nombre,$apellido1,$apellido2,$dni,$imagen) {
+        public function update($id,$usuario,$contrasenya,$email,$nombre,$apellido1,$apellido2,$dni,$imagen,$roles) {
 
-            if ($imagen["error"] == 4) {
+            if ($contrasenya == "") {
+                $contrasenya = $this->getCampo($id,"contrasenya"); // Si no se ha introducido una contraseña, dejo la misma que existe en la db.
+            }
+
+            if ($imagen["error"] == 4) { // Si no se ha introducido ninguna imagen, no la actualizamos en la bd.
 
                 $this->db->modificacion("UPDATE poliusuarios
                                             SET usuario='temporal'
-                                            WHERE id='$id'");
+                                            WHERE id='$id'"); // Cambio un campo para que la consulta siguiente siempre devuelva 1 como filas afectadas, haya o no cambios.
 
                 $result = $this->db->modificacion("UPDATE poliusuarios
-                                                        SET usuario='$usuario',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2'
+                                                        SET usuario='$usuario',contrasenya='$contrasenya',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2',dni='$dni'
                                                         WHERE id='$id'");
 
             } else {
 
-                $rutaImagen = 'img/' . $usuario . "." . pathinfo($imagen["name"], PATHINFO_EXTENSION);
+                $rutaImagen = 'img/usuarios/' . $usuario . "." . pathinfo($imagen["name"], PATHINFO_EXTENSION);
                 move_uploaded_file($imagen["tmp_name"],$rutaImagen);
 
                 $result = $this->db->modificacion("UPDATE poliusuarios
-                                                        SET usuario='$usuario',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2',imagen='$rutaImagen'
+                                                        SET usuario='$usuario',contrasenya='$contrasenya',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2',dni='$dni',imagen='$rutaImagen'
                                                         WHERE id='$id'");
             }
 
-            return $result;
+            $this->db->modificacion("DELETE FROM poliusuariosroles
+                                    WHERE idUsuario='$id'");
+
+            foreach($roles as $rol) {
+                $result2 = $this->db->modificacion("INSERT INTO poliusuariosroles
+                                                    VALUES
+                                                        ('$id','$rol')");
+            }
+
+            return $result + $result2;
 
         }
 
 
         /**
-         * Función para actualizar la información de los usuarios.
+         * Función para eliminar usuarios
          * @param id Es el id del usuario a eliminar.
          * @return 1 en caso de éxito, y 0 en caso de error.
          */
         public function delete($id) {
 
-            $result = $this->db->modificacion("DELETE FROM poliusuarios
-                                            WHERE id = '$id'");
-
-            // También vamos a borrar todas las incidencias creadas por este usuario.
-            $result2 = $this->db->modificacion("DELETE FROM incidencias
-                                             WHERE usuario = '$id'");
+            $result = $this->db->modificacion("UPDATE poliusuarios
+                                            SET borrado = 'si'
+                                            WHERE id='$id'");
 
 
             return $result;
@@ -168,7 +195,38 @@
 
 
         /**
-         * Función que devuelve un usuario concreto.
+         * Función para reactivar usuarios
+         * @param id Es el id del usuario a eliminar.
+         * @return 1 en caso de éxito, y 0 en caso de error.
+         */
+        public function activate($id) {
+
+            $result = $this->db->modificacion("UPDATE poliusuarios
+                                            SET borrado = 'no'
+                                            WHERE id='$id'");
+
+
+            return $result;
+
+        }
+
+
+        /**
+         * Función que devuelve el ultimo id de la tabla usuarios + 1.
+         * @return El ultimo id de la tabla usuarios + 1.
+         */
+        public function getLastId() {
+            
+            $result = $this->db->consulta("SELECT max(id)+1 as id
+                                            FROM poliusuarios");
+
+            return $result[0]->id;
+
+        }
+
+
+        /**
+         * Función que devuelve los roles de un usuario concreto.
          * @param id El id del usuario a consultar.
          * @return Un objeto con los roles de la persona extraídos de la BD, o null en caso de error.
          */
@@ -185,7 +243,7 @@
         }
 
         /**
-         * Función que devuelve un usuario concreto.
+         * Función que devuelve la cantidad de roles de un usuario.
          * * @param id El id del usuario a consultar.
          * @return La cantidad de roles de un usuario.
          */
@@ -202,14 +260,17 @@
         }
 
 
-
-
+        /**
+         * Función que busca usuarios en la bd.
+         * * @param texto El texto a buscar
+         * @return Un array con los usuarios encontrados.
+         */
         public function busqueda($texto) {
 
             $result = $this->db->consulta("SELECT *
                                             FROM poliusuarios
                                             WHERE 
-                                                usuario LIKE '%$texto%'
+                                                (usuario LIKE '%$texto%'
                                                 OR
                                                 email LIKE '%$texto%'
                                                 OR
@@ -219,12 +280,45 @@
                                                 OR
                                                 apellido2 LIKE '%$texto%'
                                                 OR
-                                                dni LIKE '%$texto%'");
+                                                dni LIKE '%$texto%')
+                                                AND
+                                                NOT borrado = 'si'");
             
             return $result;
 
         }
 
 
-    }
+        /**
+         * Función que devuelve un campo concreto de un usuario concreto.
+         * @param id El usuario deseado.
+         * @param campo El campo a extraer de la bd.
+         * @return El valor del campo extraido directamente de la bd.
+         */
+        public function getCampo($id,$campo) {
 
+            $result = $this->db->consulta("SELECT $campo
+                                            FROM poliusuarios
+                                            WHERE id='$id'");
+
+            return $result[0]->$campo;
+
+        }
+
+
+        /**
+         * Función que devuelve las reservas de un usuario concreto.
+         * @param id El id del usuario deseado.
+         * @return Un array con todas las reservas de dicho usuario.
+         */
+        public function getReservas($id) {
+            
+            $result = $this->db->consulta("SELECT *
+                                            FROM polireservas
+                                            WHERE idUsuario = '$id'");
+
+            return $result;
+
+        }
+
+    }

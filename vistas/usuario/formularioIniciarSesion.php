@@ -1,4 +1,4 @@
-<form action='index.php' method='post' id='formularioIniciarSesion'>
+<form action='index.php' method='post' id='formularioIniciarSesion' autocomplete='off'>
     <span>INICIAR SESIÓN</SPAN><br>
     <input type='text' name='usuario' placeholder='Usuario' required><br>
     <input type='password' name='contrasenya' placeholder='Contraseña' required><br>
