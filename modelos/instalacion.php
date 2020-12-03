@@ -50,4 +50,18 @@
 
         }
 
+        /**
+         * Función que devuelve el horario de una instalación determinada.
+         * @return Un objeto con todos los horarios de la instalación extraídos de la BD, o null en caso de error.
+         */
+        public function getHorarios($idInstalacion) {
+
+            $result = $this->db->consulta("SELECT *
+                                            FROM polihorarioinstalaciones
+                                            WHERE idInstalacion = '$id'");
+
+            return $result;
+
+        }
+
     }

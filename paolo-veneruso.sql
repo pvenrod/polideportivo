@@ -2,10 +2,10 @@
 -- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 26-11-2020 a las 22:44:02
+-- Servidor: localhost
+-- Tiempo de generación: 03-12-2020 a las 14:21:47
 -- Versión del servidor: 10.4.14-MariaDB
--- Versión de PHP: 7.2.33
+-- Versión de PHP: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,9 +30,23 @@ SET time_zone = "+00:00";
 CREATE TABLE `polihorarioinstalaciones` (
   `id` int(11) NOT NULL,
   `dia_semana` tinyint(4) DEFAULT NULL,
-  `hora_inicio` tinyint(4) DEFAULT NULL,
-  `hora_fin` tinyint(4) DEFAULT NULL
+  `hora_inicio` char(5) DEFAULT NULL,
+  `hora_fin` char(5) DEFAULT NULL,
+  `idInstalacion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `polihorarioinstalaciones`
+--
+
+INSERT INTO `polihorarioinstalaciones` (`id`, `dia_semana`, `hora_inicio`, `hora_fin`, `idInstalacion`) VALUES
+(1, 1, '9:00', '17:00', 1),
+(2, 2, '9:00', '17:00', 1),
+(3, 3, '9:00', '17:00', 1),
+(4, 4, '7:00', '17:00', 1),
+(5, 5, '9:00', '17:00', 1),
+(6, 6, '9:00', '12:00', 1),
+(7, 0, '9:00', '12:00', 1);
 
 -- --------------------------------------------------------
 
@@ -47,6 +61,13 @@ CREATE TABLE `poliinstalaciones` (
   `imagen` varchar(100) DEFAULT NULL,
   `precioHora` decimal(6,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `poliinstalaciones`
+--
+
+INSERT INTO `poliinstalaciones` (`id`, `nombre`, `descripcion`, `imagen`, `precioHora`) VALUES
+(1, 'Piscina', 'Piscina olimpica de 10 carriles y 50 metros.', 'img/instalaciones/1.jpg', '5.30');
 
 -- --------------------------------------------------------
 
@@ -96,20 +117,22 @@ CREATE TABLE `poliusuarios` (
   `apellido1` varchar(100) DEFAULT NULL,
   `apellido2` varchar(100) DEFAULT NULL,
   `dni` char(9) DEFAULT NULL,
-  `imagen` varchar(100) DEFAULT NULL
+  `imagen` varchar(100) DEFAULT NULL,
+  `borrado` enum('si','no') NOT NULL DEFAULT 'no'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `poliusuarios`
 --
 
-INSERT INTO `poliusuarios` (`id`, `usuario`, `contrasenya`, `email`, `nombre`, `apellido1`, `apellido2`, `dni`, `imagen`) VALUES
-(2, 'admin', 'admin2', 'admin@admin.admin2', 'Paolo', 'Veneruso', 'Rodríguez', '77159467X', 'img/admin.png'),
-(3, 'admin23', 'admin23', 'admin@admin.admin23', 'admin', 'admin', 'admin', '77159467X', 'img/admin2.jpg'),
-(4, 'admin234', 'admin234', 'admin@admin.assssssssssssssssssdmin23', 'admin', 'admin', 'admin', '77159467X', 'img/admin234.jpg'),
-(5, 'admin23', 'admin23', 'admin@admin.admin23', 'admin', 'admin', 'admin', '77159467X', 'img/admin.jpg'),
-(6, 'admin23', 'admin23', 'admin@admin.admin23', 'admin', 'admin', 'admin', '77159467X', 'img/admin23.jpg'),
-(7, 'admin23', 'admin23', 'admin@admin.admin23', 'admin', 'admin', 'admin', '77159467X', 'img/admin.jpg');
+INSERT INTO `poliusuarios` (`id`, `usuario`, `contrasenya`, `email`, `nombre`, `apellido1`, `apellido2`, `dni`, `imagen`, `borrado`) VALUES
+(1, 'admin', 'admin', 'admin@admin.admin', 'Paolo', 'Veneruso', 'Rodriguez', '77159467X', 'img/usuarios/admin.jpg', 'no'),
+(3, 'admin23', 'admin23', 'admin@admin.admin23', 'adminf', 'admin', 'admins', '77159467X', 'img/usuarios/admin23.jpg', 'si'),
+(4, 'admin234', 'admin234', 'admin@admin.assssssssssssssssssdmin23', 'admin', 'admind', 'admin', '77159467X', 'img/usuarios/admin234.jpg', 'no'),
+(5, 'admin23', 'admin23', 'admin@admin.admin23', 'admin', 'admin', 'admin', '77159467X', 'img/usuarios/admin.jpg', 'si'),
+(6, 'admin23', 'admin23', 'admin@admin.admin23', 'admin', 'admin', 'admin', '77159467X', 'img/usuarios/admin23.jpg', 'si'),
+(7, 'admin23', 'admin23', 'admin@admin.admin23', 'admin', 'admin', 'admin', '77159467X', 'img/usuarios/admin23.jpg', 'si'),
+(8, 'Paolo', 'paolo', 'paolo@gmail.com', 'Paolo', 'Veneruso', 'RodrÃ­guez', '77159467X', 'img/usuarios/Paolo.jpg', 'no');
 
 -- --------------------------------------------------------
 
@@ -128,7 +151,12 @@ CREATE TABLE `poliusuariosroles` (
 
 INSERT INTO `poliusuariosroles` (`idUsuario`, `idRol`) VALUES
 (1, 1),
-(1, 2);
+(1, 2),
+(3, 3),
+(4, 1),
+(4, 2),
+(8, 1),
+(8, 2);
 
 --
 -- Índices para tablas volcadas

@@ -4,7 +4,7 @@
     include_once("modelos/usuario.php");
     //include_once("modelos/reserva.php");
     include_once("modelos/instalacion.php");
-    //include_once("modelos/horarioInstalacion.php");
+    include_once("modelos/horario.php");
     include_once("modelos/rol.php");
     include_once("modelos/seguridad.php");
 
@@ -21,7 +21,7 @@
             $this->usuario = new Usuario();
             //$this->reserva = new Reserva();
             $this->instalacion = new Instalacion();
-            //$this->horarioInstalacion = new HorarioInstalacion();
+            $this->horario = new Horario();
             $this->rol = new Rol();
             $this->seguridad = new Seguridad();
 
@@ -146,6 +146,7 @@
             }
 
             $data["instalaciones"] = $this->instalacion->getAll($criterio);
+            $data["horarios"] = $this->horario->getAll(date('w'));
             $this->vista->mostrar("instalacion/gestionInstalaciones", $data);
 
         }

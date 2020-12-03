@@ -1,6 +1,7 @@
 <?php
 
     $contador = 0;
+    $horariosHoy = $data["horarios"];
 
     echo "<div id='divContenedor'>
             <span id='titulo'>GESTIÓN DE INSTALACIONES</span>
@@ -34,6 +35,8 @@
 
         foreach ($data["instalaciones"] as $instalacion) {
 
+            $horario = $horariosHoy[array_search($instalacion->id, array_column($horariosHoy,'idInstalacion'))];
+
             if ($contador % 3 == 0) {
                 echo "<tr>";
             }
@@ -53,12 +56,13 @@
                                     </tr>
                                     <tr style='height: 10px;'></tr>
                                     <tr>
-                                        <th><strong>Descripción:</strong></th>
-                                        <td>
-                                            <textarea readonly class='inputSinEscribir'>
-                                                $instalacion->descripcion
-                                            </textarea>
-                                        </td>
+                                        <th style='width: 50%'><strong>Horario hoy:</strong></th>
+                                        <td style='width: 50%'><input type='text' name='usuario' value='De $horario->hora_inicio a $horario->hora_fin' readonly class='inputSinEscribir'></td>
+                                    </tr>
+                                    <tr style='height: 10px;'></tr>
+                                    <tr>
+                                        <th style='width: 50%'><strong>Precio por hora:</strong></th>
+                                        <td style='width: 50%'><input type='text' name='usuario' value='$instalacion->precioHora €' readonly class='inputSinEscribir'></td>
                                     </tr>
                                     <tr style='height: 10px;'></tr>
                                     <tr id='trImagen$instalacion->id' style='display: none'>
@@ -104,7 +108,7 @@
         <div class='nuevo-usuario-div' id='nuevo'>
             <table class='tituloTablaPerfil'>
                 <tr>
-                    <td><span><strong>Información personal</strong></td>
+                    <td><span style='margin-left: -40px'><strong>Información de la instalación</strong></span></td>
                 </tr>
             </table>
             <table>
@@ -112,25 +116,21 @@
                 <tr style='height: 20px'></tr>
                 <tr>
                     <td>
-                        <img src='img/usuarios/default.jpg'>
+                        <img src='img/instalaciones/default.jpg'>
                     </td>
                     <td style='padding-left: 20px; padding-top: 20px;'>
                         <table>
                             <tr>
                                 <td>
-                                    Usuario:<br>
-                                    <input required type='text' id='usuario' name='usuario'>
+                                    Nombre:<br>
+                                    <input required type='text' id='usuario' name='nombre'>
                                 </td>
                             </tr>
                             <tr style='height: 10px'></tr>
                             <tr>
                                 <td>
-                                    Nombre completo:<br>
-                                    <input required type='text' id='nombre' name='nombre'> <br>
-                                    <div style='height: 5px;'></div>
-                                    <input required type='text' id='apellido1' name='apellido1'><br>
-                                    <div style='height: 5px;'> </div>
-                                    <input type='text' id='apellido2' name='apellido2'>
+                                    Precio por hora (€):<br>
+                                    <input type='number' name='precio'></textarea>
                                 </td>
                             </tr>
                             <tr style='height: 10px''></tr>
@@ -139,13 +139,9 @@
                 </tr>
                 <tr style='height: 20px'></tr>
                 <tr>
-                    <td>
-                        Email<br>
-                        <input required type='text' id='email' name='email'>           
-                    </td>
-                    <td style='padding-left: 20px;'>
-                        Contraseña<br>
-                        <input required type='password' id='contrasenya' name='contrasenya'>
+                    <td colspan='2'>
+                        Descripción:<br>
+                        <textarea name='descripcion' style='width: 100%; height: 60px;'></textarea> 
                     </td>
                 </tr>
                 <tr style='height: 20px'></tr>
