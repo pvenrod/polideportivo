@@ -383,6 +383,14 @@
 
         }
 
+        public function eliminarInstalacion() {
+
+            $id = $_REQUEST["id"];
+            $this->instalacion->delete($id);
+
+            $this->gestionInstalaciones();
+
+        }
 
         //FUNCIONES PARA AJAX
         public function cargarImagen() {

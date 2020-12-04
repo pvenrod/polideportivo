@@ -188,4 +188,22 @@
 
         }
 
+        /**
+         * Función para eliminar instalaciones
+         * @param id Es el id de la instalación a eliminar.
+         * @return 1 en caso de éxito, y 0 en caso de error.
+         */
+        public function delete($id) {
+
+            $result = $this->db->modificacion("DELETE FROM poliinstalaciones
+                                               WHERE id='$id'");
+            
+            $result = $this->db->modificacion("DELETE FROM polihorarioinstalaciones
+                                               WHERE idInstalacion='$id'");
+
+
+            return $result;
+
+        }
+
     }
