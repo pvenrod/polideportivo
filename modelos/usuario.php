@@ -2,10 +2,11 @@
 
     include_once("mysqlDB.php");
     include_once("seguridad.php");
+    include_once("imagen.php");
 
     class Usuario {
 
-        private $db, $seguridad;
+        private $db, $seguridad, $imagen;
         
         /**
          * Constructor. Establece la conexión con la base de datos y la 
@@ -16,6 +17,7 @@
 
             $this->db = new mysqlDB();
             $this->seguridad = new Seguridad();
+            $this->imagen = new Imagen();
 
         }
 
@@ -83,30 +85,20 @@
 
         /**
          * Función para crear nuevos usuarios.
-         * @param id Es el id del usuario a actualizar.
-         * @param usuario Es el nombre de usuario del usuario a actualizar.
-         * @param email Es el nuevo email del usuario a actualizar.
-         * @param contrasenya Es la nueva contraseña del usuario a actualizar.
-         * @param nombre Es el nombre del usuario a actualizar
-         * @param apellido1 Es el primer apellido del usuario a actualizar.
-         * @param apellido2 Es el segundo apellido del usuario a actualizar.
-         * @param dni Es el dni del usuario a actualizar.
-         * @param imagen Es la imagen del usuario a actualizar.
+         * @param id Es el id del nuevo usuario.
+         * @param usuario Es el nombre de usuario del nuevo usuario.
+         * @param email Es el nuevo email del nuevo usuario.
+         * @param contrasenya Es la nueva contraseña del nuevo usuario.
+         * @param nombre Es el nombre del nuevo usuario.
+         * @param apellido1 Es el primer apellido del nuevo usuario.
+         * @param apellido2 Es el segundo apellido del nuevo usuario.
+         * @param dni Es el dni del nuevo usuario.
+         * @param imagen Es la imagen del nuevo usuario.
          * @return 2 en caso de éxito, y <2 en caso de error.
          */
         public function add($id,$usuario,$contrasenya,$email,$nombre,$apellido1,$apellido2,$dni,$imagen,$borrado,$roles) {
 
-
-            if ($imagen["error"] == 4) { // Si no se ha introducido ninguna imagen, no la actualizamos en la bd.
-
-                $rutaImagen = "img/usuarios/default.jpg";                
-
-            } else {
-
-                $rutaImagen = 'img/usuarios/' . $usuario . "." . pathinfo($imagen["name"], PATHINFO_EXTENSION);
-                move_uploaded_file($imagen["tmp_name"],$rutaImagen);
-
-            }
+            $rutaImagen = $this->imagen->subir($imagen,$usuario,'usuarios');
 
             $result = $this->db->modificacion("INSERT INTO poliusuarios
                                                VALUES ('$id','$usuario','$contrasenya','$email','$nombre','$apellido1','$apellido2','$dni','$rutaImagen','$borrado')");
@@ -155,8 +147,7 @@
 
             } else {
 
-                $rutaImagen = 'img/usuarios/' . $usuario . "." . pathinfo($imagen["name"], PATHINFO_EXTENSION);
-                move_uploaded_file($imagen["tmp_name"],$rutaImagen);
+                $rutaImagen = $this->imagen->subir($imagen,$usuario,'usuarios');
 
                 $result = $this->db->modificacion("UPDATE poliusuarios
                                                         SET usuario='$usuario',contrasenya='$contrasenya',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2',dni='$dni',imagen='$rutaImagen'

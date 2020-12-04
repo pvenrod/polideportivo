@@ -59,9 +59,9 @@
             echo "<td style='position:relative'>";
 
             if ($usuario->borrado == "si") {
-                echo "<div class='elemento elementoBorrado' onclick='perfil($usuario->id)' onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide();cargarImagen($usuario->id)' onmouseout='$(\"#$usuario->id\").hide()'>";
+                echo "<div class='elemento elementoBorrado' onclick='perfil($usuario->id)' onmouseover='$(\"#$usuario->id\").slideDown(200);$(\"#nuevo\").hide();cargarImagen($usuario->id)' onmouseout='$(\"#$usuario->id\").hide()'>";
             } else {
-                echo "<div class='elemento' onclick='perfil($usuario->id)' onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide();cargarImagen($usuario->id)' onmouseout='$(\"#$usuario->id\").hide()'>";
+                echo "<div class='elemento' onclick='perfil($usuario->id)' onmouseover='$(\"#$usuario->id\").slideDown(200);$(\"#nuevo\").hide();cargarImagen($usuario->id)' onmouseout='$(\"#$usuario->id\").hide()'>";
             }
                     
             echo        "<span onmouseover='$(\"#$usuario->id\").show();$(\"#nuevo\").hide();cargarImagen($usuario->id)' >$usuario->usuario</span>

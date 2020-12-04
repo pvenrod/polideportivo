@@ -47,4 +47,17 @@
 
         }
 
+        /**
+         * Función que devuelve el ultimo id de la tabla horarioInstalaciones + 1.
+         * @return El ultimo id de la tabla horarioInstalaciones + 1.
+         */
+        public function getLastId() {
+            
+            $result = $this->db->consulta("SELECT max(id)+1 as id
+                                            FROM polihorarioinstalaciones");
+
+            return $result[0]->id;
+
+        }
+
     }

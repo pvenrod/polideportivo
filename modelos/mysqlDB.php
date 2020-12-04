@@ -17,7 +17,7 @@
 
 
         /**
-         * Función que loguea a los usuarios.
+         * Función que ejecuta consultas sql.
          * @param sql La consulta sql que se va a ejecutar.
          * @return un array con las filas extraídas de la base de datos.
          */
@@ -42,9 +42,8 @@
             return $arrayResult;
         }
 
-
         /**
-         * Función que loguea a los usuarios.
+         * Función que ejecuta consultas sql de modificación.
          * @param sql El código sql que se va a ejecutar.
          * @return un array con las filas extraídas de la base de datos.
          */
@@ -53,6 +52,16 @@
             $this->db->query($sql);
             
             return $this->db->affected_rows;
+
+        }
+
+        /**
+         * Función que devuelve el ultimo error.
+         * @return el error.
+         */
+        public function error() {
+
+            return $this->db->error;
 
         }
 

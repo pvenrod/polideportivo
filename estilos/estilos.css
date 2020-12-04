@@ -153,6 +153,7 @@ body {
     position: relative;
     left: 50%;
     transform: translateX(-50%);
+    box-shadow: 0px 0px 20px rgb(68, 68, 68);
 }
 
 #titulo {
@@ -290,6 +291,11 @@ body {
     left: 50%;
     transform: translateX(-50%);
 }
+
+textarea,select {
+    outline: none;
+}
+
 
 .no-linea {
     text-decoration: none !important;

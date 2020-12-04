@@ -11,11 +11,11 @@
                     <option value='nombre'>Ordenar por nombre</option>
                     <option value='precioHora'>Ordenar por precio/hora</option>
                 </select>
-                <input type='hidden' name='action' value='ordenar'>
+                <input type='hidden' name='action' value='ordenarInstalaciones'>
             </form>
-            <form action='index.php' method='post' id='buscador' autocomplete='off'>
+            <form action='index.php' method='get' id='buscador' autocomplete='off'>
                 <input type='text' name='texto' placeholder='Nombre, descripción...'>
-                <input type='hidden' name='action' value='buscarUsuario'>
+                <input type='hidden' name='action' value='buscarInstalacion'>
                 <button><img src='img/lupa.png'></button>
             </form>
             <table>";
@@ -26,7 +26,7 @@
                 <td>
                     <div class='elemento no-linea'>
                         <p>No se ha encontrado ninguna instalación.</p>
-                        <button class='nuevo-usuario'>Nueva instalación</button>
+                        <button class='nuevo-usuario' onclick='$(\"#nuevo\").show();$(\"#fondo\").show()'>Nueva instalación</button>
                     </div>
                 </td>
             </tr>";
@@ -42,11 +42,11 @@
             }
     
             echo "<td style='position:relative'>
-                    <div class='elemento' onclick='perfil($instalacion->id)' onmouseover='$(\"#$instalacion->id\").show();$(\"#nuevo\").hide();cargarImagen($instalacion->id)' onmouseout='$(\"#$instalacion->id\").hide()'>
+                    <div class='elemento' onclick='instalacion($instalacion->id)' onmouseover='$(\"#$instalacion->id\").slideDown(200);$(\"#nuevo\").hide();cargarImagen($instalacion->id)' onmouseout='$(\"#$instalacion->id\").hide()'>
                         <span onmouseover='$(\"#$instalacion->id\").show();$(\"#nuevo\").hide();cargarImagen($instalacion->id)' >$instalacion->nombre</span>
                     </div>
                     <div class='elementoDetalles' id='$instalacion->id' onmouseover='$(\"#$instalacion->id\").show();$(\"#nuevo\").hide()' onmouseout='$(\"#$instalacion->id\").hide()'>
-                        <img src='img/instalaciones/default.jpg'><br>
+                        <img src='img/instalaciones/default.jpg' id='imagen$instalacion->id'><br>
                             <form enctype='multipart/form-data' autocomplete='off' action='index.php' method='post'>
                                 <table style='width: 70%'>
                                     <tr style='height: 10px;'></tr>
@@ -73,7 +73,7 @@
                                     </tr>
                                     <tr style='height: 10px;'></tr>
                                     <tr>
-                                        <th><button type='button' class='botonModificar' onclick='perfil($instalacion->id)'>Ver perfil</button></th>
+                                        <th><button type='button' class='botonModificar' onclick='instalacion($instalacion->id)'>Ver perfil</button></th>
                                         <td><button type='button' class='botonEliminar' onclick='eliminar($instalacion->id)'>Eliminar</button></td>
                                     </tr>
                                 </table>
@@ -98,7 +98,7 @@
         echo    "<tr>
                     <td style='position: relative' colspan='3'>
                         <div class='elemento no-linea' style='background-color: transparent;padding: 10px 0px 10px 0px;'>
-                            <button class='nuevo-usuario' onclick='$(\"#nuevo\").show();$(\"#fondo\").show()''>Nueva instalación</button>
+                            <button class='nuevo-usuario' onclick='$(\"#nuevo\").show();$(\"#fondo\").show()'>Nueva instalación</button>
                         </div>
                     </td>
                 </tr>
@@ -130,7 +130,7 @@
                             <tr>
                                 <td>
                                     Precio por hora (€):<br>
-                                    <input type='number' name='precio'></textarea>
+                                    <input type='number' name='precioHora'></textarea>
                                 </td>
                             </tr>
                             <tr style='height: 10px''></tr>
@@ -146,24 +146,90 @@
                 </tr>
                 <tr style='height: 20px'></tr>
                 <tr>
-                    <td>
-                        DNI<br>
-                        <input required type='text' id='dni' name='dni'>           
-                    </td>
-                    <td style='padding-left: 20px;'>
-                        Roles<br>
-                        <select name='roles[]' multiple>
-                            <option value='1'>Admin</option>
-                            <option value='2' selected>Estándar</option>
-                            <option value='3'>Deshabilitado</option>
-                        </select>
-                    </td>               
+
                 </tr>
                 <tr style='height: 20px'></tr>
                 <tr>
+                    <td>
+                        Horario Lunes: <br>
+                        <span style='font-size: 17px;'>De </span>
+                        <select name='d1'>
+                        </select>
+                        <span style='font-size: 17px;'>a </span>
+                        <select name='d2'>
+                        </select>
+                    </td>
+                    <td>
+                        Horario Martes: <br>
+                        <span style='font-size: 17px;'>De </span>
+                        <select name='d3'>
+                        </select>
+                        <span style='font-size: 17px;'>a </span>
+                        <select name='d4'>
+                        </select>
+                    </td>
+                </tr>
+                <tr style='height: 20px'></tr>
+                <tr>
+                    <td>
+                        Horario Miércoles: <br>
+                        <span style='font-size: 17px;'>De </span>
+                        <select name='d5'>
+                        </select>
+                        <span style='font-size: 17px;'>a </span>
+                        <select name='d6'>
+                        </select>
+                    </td>
+                    <td>
+                        Horario Jueves: <br>
+                        <span style='font-size: 17px;'>De </span>
+                        <select name='d7'>
+                        </select>
+                        <span style='font-size: 17px;'>a </span>
+                        <select name='d8'>
+                        </select>
+                    </td>
+                </tr>
+                <tr style='height: 20px'></tr>
+                <tr>
+                    <td>
+                        Horario Viernes: <br>
+                        <span style='font-size: 17px;'>De </span>
+                        <select name='d9'>
+                        </select>
+                        <span style='font-size: 17px;'>a </span>
+                        <select name='d10'>
+                        </select>
+                    </td>
+                    <td>
+                        Horario Sábado: <br>
+                        <span style='font-size: 17px;'>De </span>
+                        <select name='d11'>
+                        </select>
+                        <span style='font-size: 17px;'>a </span>
+                        <select name='d12'>
+                        </select>
+                    </td>
+                </tr>
+                <tr style='height: 20px'></tr>
+                <tr>
+                    <td>
+                        Horario Domingo: <br>
+                        <span style='font-size: 17px;'>De </span>
+                        <select name='d13'>
+                        </select>
+                        <span style='font-size: 17px;'>a </span>
+                        <select name='d14'>
+                        </select>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr style='height: 50px'></tr>
+                <tr>
                     <td colspan='2'>
-                        Imagen de perfil: <br>
-                        <img src='img/usuarios/default.jpg' style='width: 30px; height: 30px; box-shadow: none; vertical-align: middle'>
+                        Imagen de la instalación: <br>
+                        <img src='img/instalaciones/default.jpg' style='width: 30px; height: 30px; box-shadow: none; vertical-align: middle'>
                         <input type='file' name='imagen' id='imagen' title='Doble click para editar' onclick='activar(this.id)'>
                     </td>
                 </tr>
@@ -172,7 +238,7 @@
                     <th><button class='botonModificar'>Crear</button></th>
                     <td><button type='button' class='botonEliminar' onclick='$(\"#nuevo\").hide();$(\"#fondo\").hide()'>Cancelar</button></td>
                 </tr>
-                <input type='hidden' name='action' value='crearUsuario'>
+                <input type='hidden' name='action' value='crearInstalacion'>
                 </form>
             </table>
         </div>
@@ -186,8 +252,8 @@
         <script>
 
 
-            function perfil(idUsuario) {
-                location.href=\"index.php?action=perfil&id=\"+idUsuario;
+            function instalacion(idUsuario) {
+                location.href=\"index.php?action=instalacion&id=\"+idUsuario;
             }
 
             function guardar(idForm) {
@@ -208,7 +274,7 @@
             }
 
             function cargarImagen(id) {
-                if ($('#imagen'+id).attr('src') == 'img/usuarios/default.jpg') {
+                if ($('#imagen'+id).attr('src') == 'img/instalaciones/default.jpg') {
                     $.get('index.php?action=cargarImagenInstalacion&id='+id, function( data ) {
                         $('#imagen'+id).attr('src',data);
                       });
@@ -239,5 +305,14 @@
             setTimeout(cambiarSelect,10);
 
 
+            $(document).ready(function() {
+
+                for (i=0; i<24; i++) {
+
+                    $('select').append('<option value=\"' + i + '\">' + i + '</option>');
+
+                }
+
+            });
 
         </script>";

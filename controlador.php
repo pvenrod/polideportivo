@@ -158,6 +158,9 @@
 
         // ==========================================================================================================
 
+
+        // FUNCIONES DE LOS USUARIOS ========================================================
+
         public function crearUsuario() {
 
             $id = $this->usuario->getLastId();
@@ -290,6 +293,96 @@
             
         }
 
+        // FUNCIONES DE LAS INSTALACIONES ========================================================
+
+        public function crearInstalacion() {
+
+            $id = $this->instalacion->getLastId();
+            $nombre = $_REQUEST["nombre"];
+            $descripcion = $_REQUEST["descripcion"];
+            $imagen = $_FILES["imagen"];
+            $precioHora = $_REQUEST["precioHora"];
+            $horarios = array();
+
+            for ($i=1; $i<=14; $i++) {
+                $horarios[] = $_REQUEST["d" . $i];
+            }
+
+
+            if ($this->instalacion->add($nombre,$descripcion,$imagen,$precioHora,$horarios,$id) > 1) {
+                $this->instalacion($id);
+            } else {
+                echo "<script>
+                        i=5;
+                            setInterval(function() {
+                                if (i==0) {
+                                    location.href='index.php';
+                                }
+                            document.body.innerHTML = 'Ha ocurrido un error. Redireccionando en ' + i;
+                                i--;
+                            },1000);
+                    </script>";
+            }
+
+        }
+
+        public function modificarInstalacion() {
+
+            $id = $_REQUEST["id"];
+            $nombre = $_REQUEST["nombre"];
+            $descripcion = $_REQUEST["descripcion"];
+            $imagen = $_FILES["imagen"];
+            $precioHora = $_REQUEST["precioHora"];
+
+
+            if ($this->instalacion->update($id,$nombre,$descripcion,$imagen,$precioHora) > 0) {
+                $this->instalacion($id);
+            } else {
+                echo "<script>
+                        i=5;
+                            setInterval(function() {
+                                if (i==0) {
+                                    location.href='index.php?action=gestionInstalaciones';
+                                }
+                            document.body.innerHTML = 'Ha ocurrido un error. Redireccionando en ' + i;
+                                i--;
+                            },1000);
+                    </script>";
+            }
+
+        }
+
+
+        public function ordenarInstalaciones() {
+
+            $criterio = $_REQUEST["criterio"];
+
+            $this->gestionInstalaciones($criterio);
+
+        }
+
+        public function buscarInstalacion() {
+
+            $texto = $_REQUEST["texto"];
+
+            $data["horarios"] = $this->horario->getAll(date('w'));
+            $data["instalaciones"] = $this->instalacion->busqueda($texto);
+            $this->vista->mostrar("instalacion/gestionInstalaciones", $data);
+
+        }
+
+        public function instalacion($id = null) {
+
+            if (!isset($id)) {
+                $id = $_REQUEST["id"];
+            }
+
+            $data["instalacion"] = $this->instalacion->get($id);
+            $data["horarios"] = $this->horario->get($id);
+            $this->vista->mostrar("instalacion/perfilInstalacion",$data);
+
+        }
+
 
         //FUNCIONES PARA AJAX
         public function cargarImagen() {
@@ -297,6 +390,14 @@
             $id = $_REQUEST["id"];
 
             echo $this->usuario->getCampo($id,'imagen');
+
+        }
+
+        public function cargarImagenInstalacion() {
+
+            $id = $_REQUEST["id"];
+
+            echo $this->instalacion->getCampo($id,'imagen');
 
         }
 
