@@ -2,9 +2,11 @@
 
     $contador = 0;
 
-    echo "<div id='divContenedor'>
+    echo "<div id='divContenedor' style='overflow: hidden'>
             <span id='titulo'>GESTIÓN DE RESERVAS</span>
-            <div style='width: 200%; position: relative; left: 0px;'>";
+            <button id='anterior' class='mesNoDisponible'><</button>
+            <button id='siguiente'>></button>
+            <table style='width: 200%; position: relative; left: 0px;' id='tablaMaestra'>";
 
             // ============================== PRIMER MES ===================================
 
@@ -12,8 +14,9 @@
             if ($hoy == 0) $hoy = 7; // Para que los días vayan de 1 (lunes) a 7 (domingo), no de 0 (domingo) a 6 (lunes)
             $hoyMes = (int)date('d'); // Día actual del mes (de 1 a 31)
             $mes1 = (int)date('n'); // Mes actual (número)
-            $anyo1 = (int)date('Y'); // Mes actual (número)
+            $anyo1 = (int)date('Y'); // Año actual (número)
             $mes1Letra;
+            $ultimoDiaMes1;
             switch ($mes1) {
                 case 1:
                     $mes1Letra = "Enero";
@@ -57,9 +60,6 @@
             $picoDias = $hoyMes % 7; 
             $primerDiaSemanaMes1 = $hoy - $picoDias + 1;
             if ($primerDiaSemanaMes1 < 1) $primerDiaSemanaMes1 += 7;
-            /*$mes2 = (int)date('m') + 1; //Mes siguiente
-            $diasTotalesMes2;
-            if ($mes2 == 13) $mes2 = 1; // Si estamos a diciembre, el mes siguiente deberia ser enero.*/
 
             switch ($mes1) {
                 case 1:
@@ -80,119 +80,128 @@
                     $diasTotalesMes1 = 28;
             }
 
-            echo "<table class='mes'>
-                    <tr>
-                        <td colspan='7' class='tituloMes'>
-                            $mes1Letra $anyo1
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class='diaMes'>
-                            L
-                        </td>
-                        <td class='diaMes'>
-                            M
-                        </td>
-                        <td class='diaMes'>
-                            X
-                        </td>
-                        <td class='diaMes'>
-                            J
-                        </td>
-                        <td class='diaMes'>
-                            V
-                        </td>
-                        <td class='diaMes'>
-                            S
-                        </td>
-                        <td class='diaMes'>
-                            D
-                        </td>
-                    </tr>
-                    <tr>";
+            echo "<tr>
+                    <td class='tdMaestro'>
+                        <div style='display: inline; width: 100%; float: left;'>
+                            <table class='mes'>
+                                <tr>
+                                    <td colspan='7' class='tituloMes'>
+                                        $mes1Letra $anyo1
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='diaMes'>
+                                        L
+                                    </td>
+                                    <td class='diaMes'>
+                                        M
+                                    </td>
+                                    <td class='diaMes'>
+                                        X
+                                    </td>
+                                    <td class='diaMes'>
+                                        J
+                                    </td>
+                                    <td class='diaMes'>
+                                        V
+                                    </td>
+                                    <td class='diaMes'>
+                                        S
+                                    </td>
+                                    <td class='diaMes'>
+                                        D
+                                    </td>
+                                </tr>
+                                <tr>";
 
-            $diaMes1Bucle = 1;
-            for ($i=1; $i<=7*5; $i++) {
-        
-                if ($i>=$primerDiaSemanaMes1) {
-                    if ($diaMes1Bucle <= $diasTotalesMes1) {
-                        if ($i == $hoyMes) {
-                            echo "<td style='background-color: blue; color: white;'>$i</td>";
-                        } else {
-                            echo "<td>$diaMes1Bucle</td>";
-                        }
-                        
-                        if ($i%7==0) {
-                            echo "</tr><tr>";
-                        }
-                        $diaMes1Bucle++;
-                    }
-                } else {
-                    echo "<td></td>";
-                }
-                
-                
-            }
+                        $diaMes1Bucle = 1;
+                        $diaSemana1Bucle = 1;
+                        for ($i=1; $i<=7*5; $i++) {
 
-            echo "</table>";
+                            if ($i>=$primerDiaSemanaMes1) {
+                                if ($diaMes1Bucle <= $diasTotalesMes1) {
+                                    if ($diaMes1Bucle == $hoyMes) {
+                                        echo "<td style='background-color: blue; color: white;'>$diaMes1Bucle</td>";
+                                    } else {
+                                        echo "<td>$diaMes1Bucle</td>";
+                                    }
+                                    
+                                    if ($i%7==0) {
+                                        echo "</tr><tr>";
+                                    }
+                                    $diaMes1Bucle++;
+                                    $diaSemana1Bucle++;
+                                }
+                            } else {
+                                echo "<td class='diaVacio'></td>";
+                            }
+                            
+                            if ($diaSemana1Bucle%7==0) {
+                                $diaSemana1Bucle = 1;
+                            }
+                            
+                        }
+
+                        $ultimoDiaMes1 = $diaSemana1Bucle;
+
+            echo    "</table>
+                </td><td style='width: 20px'></td>";
 
 
             // ============================== SEGUNDO MES ===================================
 
-            $hoy = (int)date('w'); // Día actual en la semana (de 1 a 7)
-            if ($hoy == 0) $hoy = 7; // Para que los días vayan de 1 (lunes) a 7 (domingo), no de 0 (domingo) a 6 (lunes)
-            $hoyMes = (int)date('d'); // Día actual del mes (de 1 a 31)
-            $mes1 = (int)date('n'); // Mes actual (número)
-            $anyo1 = (int)date('Y'); // Mes actual (número)
-            $mes1Letra;
-            switch ($mes1) {
+            $mes2 = (int)date('m') + 1; //Mes siguiente
+            $anyo2 = (int)date('Y'); // Año actual (número)
+            if ($mes2 == 13)  {
+                $mes2 = 1;
+                $anyo2 += 1;
+            }
+            $mes2Letra;
+            switch ($mes2) {
                 case 1:
-                    $mes1Letra = "Enero";
+                    $mes2Letra = "Enero";
                 break;
                 case 2:
-                    $mes1Letra = "Febrero";
+                    $mes2Letra = "Febrero";
                 break;
                 case 3:
-                    $mes1Letra = "Marzo";
+                    $mes2Letra = "Marzo";
                 break;
                 case 4:
-                    $mes1Letra = "Abril";
+                    $mes2Letra = "Abril";
                 break;
                 case 5:
-                    $mes1Letra = "Mayo";
+                    $mes2Letra = "Mayo";
                 break;
                 case 6:
-                    $mes1Letra = "Junio";
+                    $mes2Letra = "Junio";
                 break;
                 case 7:
-                    $mes1Letra = "Julio";
+                    $mes2Letra = "Julio";
                 break;
                 case 8:
-                    $mes1Letra = "Agosto";
+                    $mes2Letra = "Agosto";
                 break;
                 case 9:
-                    $mes1Letra = "Septiembre";
+                    $mes2Letra = "Septiembre";
                 break;
                 case 10:
-                    $mes1Letra = "Octubre";
+                    $mes2Letra = "Octubre";
                 break;
                 case 11:
-                    $mes1Letra = "Noviembre";
+                    $mes2Letra = "Noviembre";
                 break;
                 case 12:
-                    $mes1Letra = "Diciembre";
+                    $mes2Letra = "Diciembre";
                 break;
             }
-            $diasTotalesMes1;
-            $primerDiaSemanaMes1;
-            $picoDias = $hoyMes % 7; 
-            $primerDiaSemanaMes1 = $hoy - $picoDias + 1;
-            if ($primerDiaSemanaMes1 < 1) $primerDiaSemanaMes1 += 7;
-            /*$mes2 = (int)date('m') + 1; //Mes siguiente
             $diasTotalesMes2;
-            if ($mes2 == 13) $mes2 = 1; // Si estamos a diciembre, el mes siguiente deberia ser enero.*/
+            $primerDiaSemanaMes2 = $ultimoDiaMes1 + 3;
+            /*
+            $diasTotalesMes2;
+             // Si estamos a diciembre, el mes siguiente deberia ser enero.*/
 
-            switch ($mes1) {
+            switch ($mes2) {
                 case 1:
                 case 3:
                 case 5:
@@ -200,74 +209,75 @@
                 case 8:
                 case 10:
                 case 12:
-                    $diasTotalesMes1 = 31;
+                    $diasTotalesMes2 = 31;
                 break;
                 case 4:
                 case 6:
                 case 9:
                 case 11:
-                    $diasTotalesMes1 = 30;
+                    $diasTotalesMes2 = 30;
                 case 2:
-                    $diasTotalesMes1 = 28;
+                    $diasTotalesMes2 = 28;
             }
 
-            echo "<table class='mes'>
-                    <tr>
-                        <td colspan='7' class='tituloMes'>
-                            $mes1Letra $anyo1
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class='diaMes'>
-                            L
-                        </td>
-                        <td class='diaMes'>
-                            M
-                        </td>
-                        <td class='diaMes'>
-                            X
-                        </td>
-                        <td class='diaMes'>
-                            J
-                        </td>
-                        <td class='diaMes'>
-                            V
-                        </td>
-                        <td class='diaMes'>
-                            S
-                        </td>
-                        <td class='diaMes'>
-                            D
-                        </td>
-                    </tr>
-                    <tr>";
+            echo "<td class='tdMaestro' style='padding-left: 40px;'>
+                    <div style='display: inline'>
+                        <table class='mes'>
+                            <tr>
+                                <td colspan='7' class='tituloMes'>
+                                    $mes2Letra $anyo2
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class='diaMes'>
+                                    L
+                                </td>
+                                <td class='diaMes'>
+                                    M
+                                </td>
+                                <td class='diaMes'>
+                                    X
+                                </td>
+                                <td class='diaMes'>
+                                    J
+                                </td>
+                                <td class='diaMes'>
+                                    V
+                                </td>
+                                <td class='diaMes'>
+                                    S
+                                </td>
+                                <td class='diaMes'>
+                                    D
+                                </td>
+                            </tr>
+                            <tr>";
 
-            $diaMes1Bucle = 1;
-            for ($i=1; $i<=7*5; $i++) {
-        
-                if ($i>=$primerDiaSemanaMes1) {
-                    if ($diaMes1Bucle <= $diasTotalesMes1) {
-                        if ($i == $hoyMes) {
-                            echo "<td style='background-color: blue; color: white;'>$i</td>";
+                    $diaMes2Bucle = 1;
+                    for ($i=1; $i<=7*5; $i++) {
+                
+                        if ($i>=$primerDiaSemanaMes2) {
+                            if ($diaMes2Bucle <= $diasTotalesMes2) {
+
+                                echo "<td>$diaMes2Bucle</td>";
+                                
+                                if ($i%7==0) {
+                                    echo "</tr><tr>";
+                                }
+                                $diaMes2Bucle++;
+                            }
                         } else {
-                            echo "<td>$diaMes1Bucle</td>";
+                            echo "<td class='diaVacio'></td>";
                         }
                         
-                        if ($i%7==0) {
-                            echo "</tr><tr>";
-                        }
-                        $diaMes1Bucle++;
+                        
                     }
-                } else {
-                    echo "<td></td>";
-                }
-                
-                
-            }
-            echo "</table>";
+                echo    "</table>
+                    </td>
+                </tr>";
 
             
-    echo    "</div>
+    echo    "</table>
         </div>
         <div id='fondo'></div>
         <div class='nuevo-usuario-div' id='nuevo'>
@@ -358,57 +368,24 @@
         
         <script>
 
+            var pos = 1;
 
-            function perfil(idUsuario) {
-                location.href=\"index.php?action=perfil&id=\"+idUsuario;
-            }
-
-            function guardar(idForm) {
-                $('#form'+idForm).submit();
-            }
-
-            function eliminar(idBoton) {
-                $('#botonConfirmar').click(function() {
-                    location.href='index.php?action=eliminarUsuario&id=' + idBoton;
-                });
-                $('#botonCancelar').click(function() {
-                    $('#fondo').hide();
-                    $('#divConfirmacion').hide();
-                });
-                
-                $('#fondo').show();
-                $('#divConfirmacion').show();
-            }
-
-            function cargarImagen(id) {
-                if ($('#imagen'+id).attr('src') == 'img/usuarios/default.jpg') {
-                    $.get('index.php?action=cargarImagen&id='+id, function( data ) {
-                        $('#imagen'+id).attr('src',data);
-                      });
+            $('#siguiente').click(function() {
+                if (pos==1) {
+                    $('#tablaMaestra').css('left', '-102%');
+                    $('#siguiente').addClass('mesNoDisponible');
+                    $('#anterior').removeClass('mesNoDisponible');
+                    pos = 2;
                 }
-            }
+            })
 
-            cambiarSelect = function() {";
-
-            if (isset($_REQUEST["criterio"])) {
-                    echo "var criterio ='" . $_REQUEST["criterio"] . "'";
-                } else {
-                    echo "var criterio = 'id'";
+            $('#anterior').click(function() {
+                if (pos==2) {
+                    $('#tablaMaestra').css('left', '0px');
+                    $('#anterior').addClass('mesNoDisponible');
+                    $('#siguiente').removeClass('mesNoDisponible');
+                    pos = 1;
                 }
-                
-            echo "
-                var optionsCriterio = document.getElementById('criterio').getElementsByTagName('option');
-
-                for (i=0; i<optionsCriterio.length; i++) {
-                    if (optionsCriterio[i].value == criterio) {
-                        optionsCriterio[i].setAttribute('selected','selected')
-                        
-                    }
-                }
-
-                
-            }
-
-            setTimeout(cambiarSelect,10);
+            })
 
         </script>";
