@@ -153,7 +153,7 @@
         
         public function gestionReservas() {
             //$data["reservas"] = $this->reserva->getAll();
-            $this->vista->mostrar("usuario/gestionReservas", $data);
+            $this->vista->mostrar("reserva/gestionReservas");
         }
 
         // ==========================================================================================================

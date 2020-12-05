@@ -199,7 +199,7 @@ body {
     border: 1px solid rgb(155, 155, 155);
     border-radius: 4px;
 }
-#buscador input:focus: {
+#buscador input:focus {
     box-shadow: 0px 5px 5px rgb(228, 228, 228);
 }
 #buscador input:focus::placeholder {
@@ -554,4 +554,37 @@ textarea,select {
 }
 #tablaReservasPerfil td {
     width: 25% !important;
+}
+
+.mes {
+    width: 50% !important;
+    margin-top: 20px;
+    border-spacing: 0px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.mes td {
+    width: 14.3% !important;
+    background-color: rgb(230, 230, 230);
+    border: 1px solid white;
+    border-bottom: 2px solid blue;
+    height: 120px;
+}
+
+.tituloMes {
+    font-size: 35px;
+    font-weight: bold;
+    height: 45px !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding-bottom: 20px;
+}
+
+.diaMes {
+    font-size: 20px;
+    font-weight: bold;
+    height: 20px !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding-bottom: 10px;
 }
