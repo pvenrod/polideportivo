@@ -570,6 +570,9 @@ textarea,select {
     border-bottom: 2px solid blue;
     height: 120px;
 }
+.mes td:hover {
+    background-color: rgb(227, 246, 250);
+}
 
 .diaVacio {
     background-color:transparent !important;
@@ -626,4 +629,21 @@ textarea,select {
 .mesNoDisponible {
     background-color: grey !important;
     cursor: not-allowed !important;
+}
+
+.nuevaReserva {
+    width: 30px;
+    vertical-align: middle;
+    position: absolute;
+    right: 10px;
+    bottom: -40px;
+    cursor: pointer;
+}
+
+#tablaNuevaReserva {
+    width: 60% !important;
+}
+
+#tablaNuevaReserva td{
+    width: 50% !important;
 }

@@ -2,7 +2,7 @@
 
     include_once("vista.php");
     include_once("modelos/usuario.php");
-    //include_once("modelos/reserva.php");
+    include_once("modelos/reserva.php");
     include_once("modelos/instalacion.php");
     include_once("modelos/horario.php");
     include_once("modelos/rol.php");
@@ -19,7 +19,7 @@
 
             $this->vista = new Vista();
             $this->usuario = new Usuario();
-            //$this->reserva = new Reserva();
+            $this->reserva = new Reserva();
             $this->instalacion = new Instalacion();
             $this->horario = new Horario();
             $this->rol = new Rol();
@@ -83,8 +83,7 @@
 
             } else {
 
-                //$this->gestionReservas(); TENGO QUE DESCOMENTARLO CUANDO TENGAS ESTA FUNCION TERMINADA
-                $this->gestionUsuarios();
+                $this->gestionReservas();
 
             }
 
@@ -152,8 +151,9 @@
         }
         
         public function gestionReservas() {
-            //$data["reservas"] = $this->reserva->getAll();
-            $this->vista->mostrar("reserva/gestionReservas");
+            $data["instalaciones"] = $this->instalacion->getAll();
+            $data["reservas"] = $this->reserva->getAll();
+            $this->vista->mostrar("reserva/gestionReservas", $data);
         }
 
         // ==========================================================================================================
@@ -392,7 +392,35 @@
 
         }
 
-        //FUNCIONES PARA AJAX
+        // FUNCIONES DE LAS INSTALACIONES ========================================================
+
+        public function crearReserva() {
+
+            $id = $this->reserva->getLastId();
+            $fecha = $_REQUEST["fecha"];
+            $hora = $_REQUEST["hora"];
+            $instalacion = $_REQUEST["instalacion"];
+            $precio = $this->instalacion->getCampo($instalacion,'precioHora');
+
+            if ($this->reserva->add($id, $fecha, $hora, $precio, $instalacion) > 0) {
+                $this->gestionReservas();
+            } else {
+                echo "<script>
+                        i=5;
+                            setInterval(function() {
+                                if (i==0) {
+                                    location.href='index.php';
+                                }
+                            document.body.innerHTML = 'Ha ocurrido un error. Redireccionando en ' + i;
+                                i--;
+                            },1000);
+                    </script>";
+            }
+
+        }
+
+        // FUNCIONES PARA AJAX ========================================================
+
         public function cargarImagen() {
 
             $id = $_REQUEST["id"];

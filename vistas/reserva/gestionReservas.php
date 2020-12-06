@@ -1,5 +1,7 @@
 <?php
 
+    $instalaciones = $data["instalaciones"];
+    $reservas = $data["reservas"];
     $contador = 0;
 
     echo "<div id='divContenedor' style='overflow: hidden'>
@@ -116,14 +118,49 @@
 
                         $diaMes1Bucle = 1;
                         $diaSemana1Bucle = 1;
+                        $diaMes1BucleString;
                         for ($i=1; $i<=7*5; $i++) {
 
                             if ($i>=$primerDiaSemanaMes1) {
                                 if ($diaMes1Bucle <= $diasTotalesMes1) {
-                                    if ($diaMes1Bucle == $hoyMes) {
-                                        echo "<td style='background-color: blue; color: white;'>$diaMes1Bucle</td>";
+                                    if ($diaMes1Bucle < 10) {
+                                        $diaMes1BucleString = "0".$diaMes1Bucle;
                                     } else {
-                                        echo "<td>$diaMes1Bucle</td>";
+                                        (int)$diaMes1BucleString++;
+                                    }
+                                    if ($diaMes1Bucle == $hoyMes) {
+                                        echo "<td style='background-color: blue; color: white' onmouseenter='$(\"#div1$diaMes1Bucle\").show();' onmouseleave='$(\"#div1$diaMes1Bucle\").hide();'>
+                                                $diaMes1Bucle 
+                                                <div style='position: relative; display: none;' id='div1$diaMes1Bucle'>
+                                                    <img src='img/mas.png' class='nuevaReserva' title='Nueva reserva' id='$anyo1-$mes1-$diaMes1BucleString' onclick='nuevaReserva(this.id)'>
+                                                </div>
+                                            </td>";
+                                    } else {
+                                        
+                                        if ($diaMes1Bucle<$hoyMes) {
+                                            echo "<td style='background-color: #989898; cursor: not-allowed; border: 1px solid white;' onmouseenter='$(\"#div1$diaMes1Bucle\").show();' onmouseleave='$(\"#div1$diaMes1Bucle\").hide();'>
+                                                    $diaMes1Bucle 
+                                            </td>";
+                                        } else {
+                                            echo "<td onmouseenter='$(\"#div1$diaMes1Bucle\").show();' onmouseleave='$(\"#div1$diaMes1Bucle\").hide();' ";
+
+                                            foreach($reservas as $reserva) {
+
+                                                $fecha = strtotime($reserva->fecha);
+                                                if ($anyo1 == date('Y', $fecha) && $diaMes1Bucle == date('d', $fecha) && $mes1 == date('n', $fecha)) {
+                                                    echo "style='background-color: #c2deea;'";
+                                                }
+                
+                                            }
+
+                                            echo ">
+                                                    $diaMes1Bucle 
+                                                    <div style='position: relative; display: none;' id='div1$diaMes1Bucle'>
+                                                        <img src='img/mas.png' class='nuevaReserva' title='Nueva reserva' id='$anyo1-$mes1-$diaMes1BucleString' onclick='nuevaReserva(this.id)'>
+                                                    </div>
+                                            </td>";
+                                        }
+
                                     }
                                     
                                     if ($i%7==0) {
@@ -283,71 +320,32 @@
         <div class='nuevo-usuario-div' id='nuevo'>
             <table class='tituloTablaPerfil'>
                 <tr>
-                    <td><span><strong>Información personal</strong></td>
+                    <td><span><strong>Nueva reserva</strong></td>
                 </tr>
             </table>
-            <table>
+            <table id='tablaNuevaReserva'>
                 <form action='index.php' method='post' autocomplete='off' enctype='multipart/form-data'>
                 <tr style='height: 20px'></tr>
                 <tr>
-                    <td>
-                        <img src='img/usuarios/default.jpg'>
-                    </td>
-                    <td style='padding-left: 20px; padding-top: 20px;'>
-                        <table>
-                            <tr>
-                                <td>
-                                    Usuario:<br>
-                                    <input required type='text' id='usuario' name='usuario'>
-                                </td>
-                            </tr>
-                            <tr style='height: 10px'></tr>
-                            <tr>
-                                <td>
-                                    Nombre completo:<br>
-                                    <input required type='text' id='nombre' name='nombre'> <br>
-                                    <div style='height: 5px;'></div>
-                                    <input required type='text' id='apellido1' name='apellido1'><br>
-                                    <div style='height: 5px;'> </div>
-                                    <input type='text' id='apellido2' name='apellido2'>
-                                </td>
-                            </tr>
-                            <tr style='height: 10px''></tr>
-                        </table>
-                    </td>
+                    <td>Fecha:</td>
+                    <td><input type='date' name='fecha' id='fechaInput'></td>
                 </tr>
                 <tr style='height: 20px'></tr>
                 <tr>
-                    <td>
-                        Email<br>
-                        <input required type='text' id='email' name='email'>           
-                    </td>
-                    <td style='padding-left: 20px;'>
-                        Contraseña<br>
-                        <input required type='password' id='contrasenya' name='contrasenya'>
-                    </td>
+                    <td>Hora:</td>
+                    <td><input type='time' name='hora'></td>
                 </tr>
                 <tr style='height: 20px'></tr>
                 <tr>
+                    <td>Instalación:</td>
                     <td>
-                        DNI<br>
-                        <input required type='text' id='dni' name='dni'>           
-                    </td>
-                    <td style='padding-left: 20px;'>
-                        Roles<br>
-                        <select name='roles[]' multiple>
-                            <option value='1'>Admin</option>
-                            <option value='2' selected>Estándar</option>
-                            <option value='3'>Deshabilitado</option>
-                        </select>
-                    </td>               
-                </tr>
-                <tr style='height: 20px'></tr>
-                <tr>
-                    <td colspan='2'>
-                        Imagen de perfil: <br>
-                        <img src='img/usuarios/default.jpg' style='width: 30px; height: 30px; box-shadow: none; vertical-align: middle'>
-                        <input type='file' name='imagen' id='imagen' title='Doble click para editar' onclick='activar(this.id)'>
+                        <select name='instalacion'>";
+                            
+                            foreach ($instalaciones as $instalacion) {
+                                echo "<option value='$instalacion->id'>$instalacion->nombre</option>";
+                            }
+
+    echo                "</select>
                     </td>
                 </tr>
                 <tr style='height: 20px'></tr>
@@ -355,7 +353,7 @@
                     <th><button class='botonModificar'>Crear</button></th>
                     <td><button type='button' class='botonEliminar' onclick='$(\"#nuevo\").hide();$(\"#fondo\").hide()'>Cancelar</button></td>
                 </tr>
-                <input type='hidden' name='action' value='crearUsuario'>
+                <input type='hidden' name='action' value='crearReserva'>
                 </form>
             </table>
         </div>
@@ -388,4 +386,10 @@
                 }
             })
 
+            function nuevaReserva(fecha) {
+
+                $(\".nuevo-usuario-div\").show(); 
+                $(\"#fondo\").show()
+                $(\"#fechaInput\").val(fecha);
+            }
         </script>";

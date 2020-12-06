@@ -44,8 +44,12 @@
          * Función que devuelve todas las instalaciones.
          * @return Un objeto con todos los datos de todas las instalaciones extraídos de la BD, o null en caso de error.
          */
-        public function getAll($criterio) {
+        public function getAll($criterio = null) {
 
+            if ($criterio == null) {
+                $criterio = "nombre";
+            }
+            
             $result = $this->db->consulta("SELECT *
                                             FROM poliinstalaciones
                                             ORDER BY $criterio ASC");
