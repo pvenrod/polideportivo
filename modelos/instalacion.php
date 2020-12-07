@@ -70,27 +70,18 @@
          */
         public function add($nombre,$descripcion,$imagen,$precioHora,$horarios,$id) {
 
-            $rutaImagen = $this->imagen->subir($imagen,$id,'instalaciones');
+            $rutaImagen = $this->imagen->subir($imagen,$id,'instalaciones','Instalacion');
 
             $result = $this->db->modificacion("INSERT INTO poliinstalaciones
                                                VALUES ('$id','$nombre','$descripcion','$rutaImagen','$precioHora')");
 
-            $horaInicio = array();
-            $horaCierre = array();
-
-            for ($i=0; $i<=11; $i++) {
-
-                $horaInicio[] = $horarios[$i+1];
-                $horaCierre[] = $horarios[$i+2];                
-
-            }
+            $horaInicio = $horarios[0];
+            $horaCierre = $horarios[1];
             
             $diaSemana = 1;
 
             for ($i=0; $i<7; $i++) {
 
-                $horaInicio2 = $horaInicio[$i];
-                $horaCierre2 = $horaCierre[$i];
                 $idHorario = $this->horario->getLastId();
 
                 $result2 = $this->db->modificacion("INSERT INTO polihorarioinstalaciones
@@ -115,7 +106,7 @@
          */
         public function update($id,$nombre,$descripcion,$imagen,$precioHora) {
 
-            $rutaImagen = $this->imagen->subir($imagen,$id,'instalaciones');
+            $rutaImagen = $this->imagen->subir($imagen,$id,'instalaciones','Instalacion');
 
             $this->db->modificacion("UPDATE poliinstalaciones
                                     SET nombre='temporal'
@@ -149,7 +140,7 @@
          */
         public function getLastId() {
             
-            $result = $this->db->consulta("SELECT max(id)+1 as id
+            $result = $this->db->consulta("SELECT IFNULL(max(id)+1,1) as id
                                             FROM poliinstalaciones");
 
             return $result[0]->id;
@@ -167,8 +158,10 @@
             $result = $this->db->consulta("SELECT $campo
                                             FROM poliinstalaciones
                                             WHERE id='$id'");
-
-            return $result[0]->$campo;
+            if ($result != null) {
+                $result = $result[0]->$campo;
+            }
+            return $result;
 
         }
 

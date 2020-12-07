@@ -1,12 +1,22 @@
 <?php
 
+    include_once('usuario.php');
+    include_once('instalacion.php');
+
     class Imagen {
 
-        public function subir($imagen, $usuario, $tipo) {
+        public function subir($imagen, $id, $tipo, $objeto) {
+
+            $objetoNuevo = new $objeto();
 
             if ($imagen["error"] == 4) { // Si no se ha introducido ninguna imagen, no la actualizamos en la bd.
 
-                $rutaImagen = "img/".$tipo."/default.jpg";                
+                if ($objetoNuevo->getCampo($id, 'imagen') == null) {
+                    $rutaImagen = "img/".$tipo."/default.jpg";    
+                } else {
+                    $rutaImagen = $objetoNuevo->getCampo($id, 'imagen');    
+                }
+                            
     
             } else {
     
@@ -16,7 +26,7 @@
 
                     if ($imagen["size"] <= 1000000) {
 
-                        $rutaImagen = 'img/usuarios/' . $usuario . "." . pathinfo($imagen["name"], PATHINFO_EXTENSION);
+                        $rutaImagen = 'img/'.$tipo.'/' . $id . "." . pathinfo($imagen["name"], PATHINFO_EXTENSION);
                         move_uploaded_file($imagen["tmp_name"],$rutaImagen);
 
                     }

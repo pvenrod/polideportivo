@@ -34,4 +34,16 @@
             }
         }
 
+        public function esAdmin() {
+
+            $esAdmin = false;
+
+            if ($this->get('rol') == '1') {
+                $esAdmin = true;
+            }
+            
+            return $esAdmin;
+
+        }
+
     }

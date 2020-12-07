@@ -243,7 +243,7 @@
             </table>
         </div>
         <div id='divConfirmacion'>
-            <span>¿Estás seguro de que deseas eliminar este usuario?</span>
+            <span>¿Estás seguro de que deseas eliminar esta instalación?</span>
             <br>
             <button id='botonConfirmar'>Confirmar</button>
             <button id='botonCancelar'>Cancelar</button>
@@ -262,7 +262,7 @@
 
             function eliminar(idBoton) {
                 $('#botonConfirmar').click(function() {
-                    location.href='index.php?action=eliminarUsuario&id=' + idBoton;
+                    location.href='index.php?action=eliminarInstalacion&id=' + idBoton;
                 });
                 $('#botonCancelar').click(function() {
                     $('#fondo').hide();
@@ -312,6 +312,8 @@
                     $('select').append('<option value=\"' + i + '\">' + i + '</option>');
 
                 }
+
+                $('select#criterio').html('<option value=\"id\">Ordenar por id</option><option value=\"nombre\">Ordenar por nombre</option><option value=\"precioHora\">Ordenar por precio/hora</option>')
 
             });
 

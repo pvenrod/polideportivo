@@ -32,7 +32,7 @@
             
             $result = $this->db->consulta("SELECT *
                                             FROM polireservas
-                                            WHERE id = '$id'");
+                                            WHERE usuario = '$id'");
 
             return $result;
 
@@ -55,10 +55,10 @@
          * Función que inserta nuevas reservas.
          * @return 1 en caso de éxito, 0 en caso de error.
          */
-        public function add($id, $fecha, $hora, $precio, $instalacion) {
+        public function add($id, $fecha, $hora, $precio, $instalacion, $usuario) {
             
             $result = $this->db->modificacion("INSERT INTO polireservas
-                                               VALUES ('$id','$fecha','$hora','$precio','$instalacion')");
+                                               VALUES ('$id','$fecha','$hora','$precio','$instalacion','$usuario')");
 
             return $result;
 
@@ -70,7 +70,7 @@
          */
         public function getLastId() {
             
-            $result = $this->db->consulta("SELECT max(id)+1 as id
+            $result = $this->db->consulta("SELECT IFNULL(max(id)+1,1) as id
                                             FROM polireservas");
 
             return $result[0]->id;

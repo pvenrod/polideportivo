@@ -2,6 +2,7 @@
 
     $instalaciones = $data["instalaciones"];
     $reservas = $data["reservas"];
+    $idUsuario = $data["idUsuario"];
     $contador = 0;
 
     echo "<div id='divContenedor' style='overflow: hidden'>
@@ -234,9 +235,6 @@
             }
             $diasTotalesMes2;
             $primerDiaSemanaMes2 = $ultimoDiaMes1 + 3;
-            /*
-            $diasTotalesMes2;
-             // Si estamos a diciembre, el mes siguiente deberia ser enero.*/
 
             switch ($mes2) {
                 case 1:
@@ -291,12 +289,40 @@
                             <tr>";
 
                     $diaMes2Bucle = 1;
+                    $diaMes2BucleString;
+                    $mes2String;
                     for ($i=1; $i<=7*5; $i++) {
                 
                         if ($i>=$primerDiaSemanaMes2) {
                             if ($diaMes2Bucle <= $diasTotalesMes2) {
 
-                                echo "<td>$diaMes2Bucle</td>";
+                                if ($diaMes2Bucle < 10) {
+                                    $diaMes2BucleString = "0".$diaMes2Bucle;
+                                } else {
+                                    (int)$diaMes2BucleString++;
+                                }
+                                if ($mes2 < 10) {
+                                    $mes2String = "0".$mes2;
+                                } else {
+                                    (int)$mes2String++;
+                                }
+                                echo "<td onmouseenter='$(\"#div2$diaMes2Bucle\").show();' onmouseleave='$(\"#div2$diaMes2Bucle\").hide();' ";
+
+                                foreach($reservas as $reserva) {
+
+                                    $fecha = strtotime($reserva->fecha);
+                                    if ($anyo2 == date('Y', $fecha) && $diaMes2Bucle == date('d', $fecha) && $mes2 == date('n', $fecha)) {
+                                        echo "style='background-color: #c2deea;'";
+                                    }
+    
+                                }
+
+                                echo ">
+                                        $diaMes2Bucle 
+                                        <div style='position: relative; display: none;' id='div2$diaMes2Bucle'>
+                                            <img src='img/mas.png' class='nuevaReserva' title='Nueva reserva' id='$anyo2-$mes2String-$diaMes2BucleString' onclick='nuevaReserva(this.id)'>
+                                        </div>
+                                </td>";
                                 
                                 if ($i%7==0) {
                                     echo "</tr><tr>";
@@ -332,11 +358,6 @@
                 </tr>
                 <tr style='height: 20px'></tr>
                 <tr>
-                    <td>Hora:</td>
-                    <td><input type='time' name='hora'></td>
-                </tr>
-                <tr style='height: 20px'></tr>
-                <tr>
                     <td>Instalación:</td>
                     <td>
                         <select name='instalacion'>";
@@ -354,6 +375,7 @@
                     <td><button type='button' class='botonEliminar' onclick='$(\"#nuevo\").hide();$(\"#fondo\").hide()'>Cancelar</button></td>
                 </tr>
                 <input type='hidden' name='action' value='crearReserva'>
+                <input type='hidden' name='idUsuario' value='$idUsuario'>
                 </form>
             </table>
         </div>

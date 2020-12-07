@@ -98,7 +98,7 @@
          */
         public function add($id,$usuario,$contrasenya,$email,$nombre,$apellido1,$apellido2,$dni,$imagen,$borrado,$roles) {
 
-            $rutaImagen = $this->imagen->subir($imagen,$usuario,'usuarios');
+            $rutaImagen = $this->imagen->subir($imagen,$usuario,'usuarios','Usuario');
 
             $result = $this->db->modificacion("INSERT INTO poliusuarios
                                                VALUES ('$id','$usuario','$contrasenya','$email','$nombre','$apellido1','$apellido2','$dni','$rutaImagen','$borrado')");
@@ -135,24 +135,12 @@
                 $contrasenya = $this->getCampo($id,"contrasenya"); // Si no se ha introducido una contraseña, dejo la misma que existe en la db.
             }
 
-            if ($imagen["error"] == 4) { // Si no se ha introducido ninguna imagen, no la actualizamos en la bd.
+            $rutaImagen = $this->imagen->subir($imagen,$id,'usuarios','Usuario');
 
-                $this->db->modificacion("UPDATE poliusuarios
-                                            SET usuario='temporal'
-                                            WHERE id='$id'"); // Cambio un campo para que la consulta siguiente siempre devuelva 1 como filas afectadas, haya o no cambios.
 
-                $result = $this->db->modificacion("UPDATE poliusuarios
-                                                        SET usuario='$usuario',contrasenya='$contrasenya',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2',dni='$dni'
-                                                        WHERE id='$id'");
-
-            } else {
-
-                $rutaImagen = $this->imagen->subir($imagen,$usuario,'usuarios');
-
-                $result = $this->db->modificacion("UPDATE poliusuarios
-                                                        SET usuario='$usuario',contrasenya='$contrasenya',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2',dni='$dni',imagen='$rutaImagen'
-                                                        WHERE id='$id'");
-            }
+            $result = $this->db->modificacion("UPDATE poliusuarios
+                                                SET usuario='$usuario',contrasenya='$contrasenya',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2',dni='$dni',imagen='$rutaImagen'
+                                                WHERE id='$id'");
 
             $this->db->modificacion("DELETE FROM poliusuariosroles
                                     WHERE idUsuario='$id'");
@@ -208,7 +196,7 @@
          */
         public function getLastId() {
             
-            $result = $this->db->consulta("SELECT max(id)+1 as id
+            $result = $this->db->consulta("SELECT IFNULL(max(id)+1,1) as id
                                             FROM poliusuarios");
 
             return $result[0]->id;
@@ -292,7 +280,10 @@
                                             FROM poliusuarios
                                             WHERE id='$id'");
 
-            return $result[0]->$campo;
+            if ($result != null) {
+                $result = $result[0]->$campo;
+            }
+            return $result;
 
         }
 
