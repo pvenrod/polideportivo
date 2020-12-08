@@ -130,8 +130,8 @@
                                         (int)$diaMes1BucleString++;
                                     }
                                     if ($diaMes1Bucle == $hoyMes) {
-                                        echo "<td style='background-color: blue; color: white' onmouseenter='$(\"#div1$diaMes1Bucle\").show();' onmouseleave='$(\"#div1$diaMes1Bucle\").hide();'>
-                                                $diaMes1Bucle 
+                                        echo "<td style='background-color: blue; color: white' onmouseenter='$(\"#div1$diaMes1Bucle\").show(); buscarReservas(\"$anyo1-$mes1-$diaMes1BucleString\",\"td1$diaMes1Bucle\");' id='td1$diaMes1Bucle' onmouseleave='$(\"#div1$diaMes1Bucle\").hide();'>
+                                                <span style='cursor: pointer;' onclick='mostrarReservas(\"$anyo1-$mes1-$diaMes1BucleString\")'>$diaMes1Bucle </span>
                                                 <div style='position: relative; display: none;' id='div1$diaMes1Bucle'>
                                                     <img src='img/mas.png' class='nuevaReserva' title='Nueva reserva' id='$anyo1-$mes1-$diaMes1BucleString' onclick='nuevaReserva(this.id)'>
                                                 </div>
@@ -143,19 +143,19 @@
                                                     $diaMes1Bucle 
                                             </td>";
                                         } else {
-                                            echo "<td onmouseenter='$(\"#div1$diaMes1Bucle\").show();' onmouseleave='$(\"#div1$diaMes1Bucle\").hide();' ";
+                                            echo "<td onmouseenter='$(\"#div1$diaMes1Bucle\").show(); buscarReservas(\"$anyo1-$mes1-$diaMes1BucleString\",\"td1$diaMes1Bucle\");' id='td1$diaMes1Bucle' onmouseleave='$(\"#div1$diaMes1Bucle\").hide();' style='position:relative; ";
 
                                             foreach($reservas as $reserva) {
 
                                                 $fecha = strtotime($reserva->fecha);
                                                 if ($anyo1 == date('Y', $fecha) && $diaMes1Bucle == date('d', $fecha) && $mes1 == date('n', $fecha)) {
-                                                    echo "style='background-color: #c2deea;'";
+                                                    echo "background-color: #c2deea;";
                                                 }
                 
                                             }
 
-                                            echo ">
-                                                    $diaMes1Bucle 
+                                            echo "'>
+                                                    <span style='cursor: pointer;' onclick='mostrarReservas(\"$anyo1-$mes1-$diaMes1BucleString\")'>$diaMes1Bucle </span>
                                                     <div style='position: relative; display: none;' id='div1$diaMes1Bucle'>
                                                         <img src='img/mas.png' class='nuevaReserva' title='Nueva reserva' id='$anyo1-$mes1-$diaMes1BucleString' onclick='nuevaReserva(this.id)'>
                                                     </div>
@@ -306,19 +306,19 @@
                                 } else {
                                     (int)$mes2String++;
                                 }
-                                echo "<td onmouseenter='$(\"#div2$diaMes2Bucle\").show();' onmouseleave='$(\"#div2$diaMes2Bucle\").hide();' ";
+                                echo "<td onmouseenter='$(\"#div2$diaMes2Bucle\").show(); buscarReservas(\"$anyo2-$mes2String-$diaMes2BucleString\",\"td2$diaMes2Bucle\");' id='td2$diaMes2Bucle' onmouseleave='$(\"#div2$diaMes2Bucle\").hide();' ";
 
                                 foreach($reservas as $reserva) {
 
                                     $fecha = strtotime($reserva->fecha);
                                     if ($anyo2 == date('Y', $fecha) && $diaMes2Bucle == date('d', $fecha) && $mes2 == date('n', $fecha)) {
-                                        echo "style='background-color: #c2deea;'";
+                                        echo "style='background-color: #c2deea; cursor: pointer;'";
                                     }
     
                                 }
 
                                 echo ">
-                                        $diaMes2Bucle 
+                                        <span style='cursor: pointer;' onclick='mostrarReservas(\"$anyo2-$mes2String-$diaMes2BucleString\")'>$diaMes2Bucle </span>
                                         <div style='position: relative; display: none;' id='div2$diaMes2Bucle'>
                                             <img src='img/mas.png' class='nuevaReserva' title='Nueva reserva' id='$anyo2-$mes2String-$diaMes2BucleString' onclick='nuevaReserva(this.id)'>
                                         </div>
@@ -360,13 +360,14 @@
                 <tr>
                     <td>Instalación:</td>
                     <td>
-                        <select name='instalacion'>";
+                        <select name='instalacion' style='width: 100%; padding: 8px' onchange='cambiarImagen()' id='instalacion'>";
                             
                             foreach ($instalaciones as $instalacion) {
                                 echo "<option value='$instalacion->id'>$instalacion->nombre</option>";
                             }
 
-    echo                "</select>
+    echo                "</select><br>
+                        <img id='imgInstalacion' src='img/instalaciones/1.jpg' style='width: 100%; height: auto; position: relative; left: 50%; transform: translateX(-50%); border-radius: 0px; margin-top: 10px; box-shadow: 0px 5px 5px black;'>
                     </td>
                 </tr>
                 <tr style='height: 20px'></tr>
@@ -377,6 +378,19 @@
                 <input type='hidden' name='action' value='crearReserva'>
                 <input type='hidden' name='idUsuario' value='$idUsuario'>
                 </form>
+            </table>
+        </div>
+        <div id='divReservasDeUnDia'>
+            <span id='tituloReservas'></span>
+            <img src='img/cruz.png' class='cerrar' title='Cerrar' onclick='quitarMostrarReserva()'>
+            <img src='img/mas.png' class='nuevaReservaVentana2' title='Nueva reserva' onclick='nuevaReserva(this.id)'>
+            <table id='tablaReservasDeUnDia'>
+                <tr style='margin-bottom: 20px;'>
+                    <th>Hora</th>
+                    <th>Precio</th>
+                    <th>Instalación</th>
+                    <th colspan='2'>Acciones</th>
+                </tr>
             </table>
         </div>
         <div id='divConfirmacion'>
@@ -410,8 +424,99 @@
 
             function nuevaReserva(fecha) {
 
-                $(\".nuevo-usuario-div\").show(); 
+                $(\".nuevo-usuario-div\").slideDown('fast'); 
                 $(\"#fondo\").show()
                 $(\"#fechaInput\").val(fecha);
+                $('#divReservasDeUnDia').hide();
+                
+            }
+
+
+            function buscarReservas(fecha,td) {
+                $.get('index.php?action=numeroReservas&fecha='+fecha, function( data ) {
+                    if (parseInt(data)==1) {
+                        $('#'+td).attr('title','Hay '+data+' reserva');
+                    } else {
+                        $('#'+td).attr('title','Hay '+data+' reservas');
+                    }
+                });
+            }
+
+            function mostrarReservas(fecha,td) {
+                $.get('index.php?action=buscarReservas&fecha='+fecha, function( data ) {
+
+                    var respuesta = JSON.parse(data);
+                    var arrayRespuesta = Object.keys(respuesta);
+
+                        $('#tituloReservas').html('Reservas del ' + fecha);
+                        $('.nuevaReservaVentana2').attr('id',fecha);
+                        $('#divReservasDeUnDia').slideDown('fast');
+                        $('#fondo').show();
+
+                        for (i=0; i<arrayRespuesta.length; i++) {
+
+                            var horaInicio = respuesta[i].horaInicio.substring(0,5);
+                            var horaFin = respuesta[i].horaFin.substring(0,5);
+                            var precio = respuesta[i].precio;
+                            var instalacion = respuesta[i].instalacion;
+                            var id = respuesta[i].id;
+                            var onclickModificar = '\'index.php?action=vistaModificarReserva&id='+ respuesta[i].id + '\'' ;
+                            var onclickEliminar = '\'index.php?action=eliminarReserva&id='+ respuesta[i].id + '\'' ;
+
+                            var trReserva = '<tr id=\"tr'+id+'\">\\n' +
+                                                '<td>\\n' +
+                                                    'De ' + horaInicio + ' a ' + horaFin + '\\n' + 
+                                                '</td>\\n' +
+                                                '<td>\\n' +
+                                                    precio + '€\\n' + 
+                                                '</td>\\n' +
+                                                '<td>\\n' +
+                                                    instalacion + '\\n' + 
+                                                '</td>\\n' +
+                                                '<td>\\n' +
+                                                    '<button onclick=\"location.href=' + onclickModificar + '\" class=\"modificarReserva\">Modificar reserva</button>\\n' + 
+                                                '</td>\\n' +
+                                                '<td>\\n' +
+                                                    '<button onclick=\"eliminarReserva('+id+')\" class=\"eliminarReserva\">Eliminar reserva</button>\\n' + 
+                                                '</td>\\n' +
+                                            '</tr>';
+
+                            $('#tablaReservasDeUnDia').append(trReserva)
+                            
+                        }
+
+            
+
+                });
+            }
+
+            function quitarMostrarReserva() {
+                $('#divReservasDeUnDia').html('<span id=\"tituloReservas\"></span>\\n' +
+                                                '<img src=\"img/cruz.png\" class=\"cerrar\" title=\"Cerrar\" onclick=\"quitarMostrarReserva()\">\\n' +
+                                                '<img src=\"img/mas.png\" class=\"nuevaReservaVentana2\" title=\"Nueva reserva\" onclick=\"nuevaReserva(this.id)\">\\n' +
+                                                '<table id=\"tablaReservasDeUnDia\">\\n' +
+                                                    '<tr style=\"margin-bottom: 20px;\">\\n' +
+                                                        '<th>Hora</th>\\n' +
+                                                        '<th>Precio</th>\\n' +
+                                                        '<th>Instalación</th>\\n' +
+                                                        '<th colspan=\"2\">Acciones</th>\\n' +
+                                                    '</tr>\\n' +
+                                                '</table>');
+                $('#divReservasDeUnDia').slideUp('fast');
+                $('#fondo').hide();
+            }
+
+            function eliminarReserva(id) {
+                $.get('index.php?action=eliminarReserva&id='+id, function( data ) {
+                    if (data == '1') {
+                       $('#tr'+id).slideUp();
+                    } else {
+                        alert('Ha ocurrido un error borrando la reserva.');
+                    }
+                })
+            }
+
+            function cambiarImagen() {
+                $('#imgInstalacion').attr('src','img/instalaciones/'+$('#instalacion').val()+'.jpg');
             }
         </script>";

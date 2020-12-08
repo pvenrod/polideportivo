@@ -161,14 +161,20 @@
         
         public function gestionReservas() {
 
-            if ($this->seguridad->esAdmin()) {
-                $data["reservas"] = $this->reserva->getAll();
+            if ($this->seguridad->haySesionIniciada()) {
+                if ($this->seguridad->esAdmin()) {
+                    $data["reservas"] = $this->reserva->getAll();
+                } else {
+                    $data["reservas"] = $this->reserva->get($this->seguridad->get('id'));
+                }
+                $data["instalaciones"] = $this->instalacion->getAll();
+                $data["idUsuario"] = $this->seguridad->get('id');
+                $this->vista->mostrar("reserva/gestionReservas", $data);
             } else {
-                $data["reservas"] = $this->reserva->get($this->seguridad->get('id'));
+                $data["msjError"] = "Necesitas iniciar sesión.";
+                $this->vista->mostrar("usuario/formularioIniciarSesion", $data);
             }
-            $data["instalaciones"] = $this->instalacion->getAll();
-            $data["idUsuario"] = $this->seguridad->get('id');
-            $this->vista->mostrar("reserva/gestionReservas", $data);
+            
             
         }
 
@@ -219,7 +225,7 @@
 
         public function perfil($id = null) {
 
-            if ($this->seguridad->esAdmin()) {
+            if ($this->seguridad->esAdmin() || $_REQUEST["id"] == $this->seguridad->get('id')) {
 
                 if (!isset($id)) {
                     $id = $_REQUEST["id"];
@@ -228,7 +234,7 @@
                 $data["todosLosRoles"] = $this->rol->getAll();
                 $data["rolesUsuario"] = $this->rol->get($id);
                 $data["usuario"] = $this->usuario->get($id);
-                $data["reservas"] = $this->usuario->getReservas($id);
+                $data["reservas"] = $this->reserva->get($id);
                 $this->vista->mostrar("usuario/perfil",$data);
 
             } else {
@@ -237,7 +243,7 @@
                         $data["todosLosRoles"] = $this->rol->getAll();
                         $data["rolesUsuario"] = $this->rol->get($id);
                         $data["usuario"] = $this->usuario->get($id);
-                        $data["reservas"] = $this->usuario->getReservas($id);
+                        $data["reservas"] = $this->reserva->get($id);
                         $this->vista->mostrar("usuario/perfil",$data);
                     }
                     $id = $this->seguridad->get('id');
@@ -464,12 +470,56 @@
 
             $id = $this->reserva->getLastId();
             $fecha = $_REQUEST["fecha"];
-            $hora = '00:00';
             $instalacion = $_REQUEST["instalacion"];
-            $precio = $this->instalacion->getCampo($instalacion,'precioHora');
+            $precio = $this->instalacion->getCampo($instalacion,'precioHora') * 1;
             $usuario = $_REQUEST["idUsuario"];
 
-            if ($this->reserva->add($id, $fecha, $hora, $precio, $instalacion, $usuario) > 0) {
+            if ($this->reserva->add($id, $fecha, $precio, $instalacion, $usuario) > 0) {
+                $this->vistaModificarReserva($id,$instalacion);
+            } else {
+                echo "<script>
+                        i=5;
+                            setInterval(function() {
+                                if (i==0) {
+                                    location.href='index.php';
+                                }
+                            document.body.innerHTML = 'Ha ocurrido un error. Redireccionando en ' + i;
+                                i--;
+                            },1000);
+                    </script>";
+            }
+
+        }
+
+        public function vistaModificarReserva($id = null,$instalacion=null) {
+
+            if (!isset($id)) {
+                $id = $_REQUEST["id"];
+            }
+
+            if (!isset($instalacion)) {
+                $instalacion = $this->reserva->getCampo($id,'instalacion');
+            }
+
+            $data["reserva"] = $this->reserva->getOne($id);
+            $data["instalaciones"] = $this->instalacion->getAll();
+            $data["horario"] = $this->horario->get($instalacion);
+            $data["reservasInstalacion"] = $this->reserva->getPorInstalacion($instalacion);
+            $this->vista->mostrar("reserva/reserva", $data);
+
+        }
+
+        public function modificarReserva() {
+
+            $id = $_REQUEST["id"];
+            $fecha = $this->reserva->getCampo($id, 'fecha');
+            $horaInicio = $_REQUEST["horaInicio"];
+            $horaFin = $_REQUEST["horaFin"];
+            $instalacion = $this->reserva->getCampo($id, 'instalacion');
+            $precio = (float)$this->instalacion->getCampo($instalacion,'precioHora') * ((int)$horaFin-(int)$horaInicio);
+            $usuario = $_REQUEST["idUsuario"];
+
+            if ($this->reserva->update($id,$fecha,$horaInicio,$horaFin,$precio,$instalacion,$usuario)>0) {
                 $this->gestionReservas();
             } else {
                 echo "<script>
@@ -501,6 +551,41 @@
             $id = $_REQUEST["id"];
 
             echo $this->instalacion->getCampo($id,'imagen');
+
+        }
+
+        public function numeroReservas() {
+
+            $fecha = strtotime($_REQUEST["fecha"]);
+            $dia = date('d',$fecha);
+            $mes = date('m',$fecha);
+            $anyo = date('Y',$fecha);
+
+            echo $this->reserva->cantidad($dia, $mes, $anyo);
+
+        }
+
+        public function buscarReservas() {
+
+            $fecha = strtotime($_REQUEST["fecha"]);
+            $dia = date('d',$fecha);
+            $mes = date('m',$fecha);
+            $anyo = date('Y',$fecha);
+
+            if ($this->seguridad->esAdmin()) {
+                $result = $this->reserva->buscar($dia, $mes, $anyo);
+            } else {
+                $result = $this->reserva->buscar($dia, $mes, $anyo,$this->seguridad->get('id'));
+            }
+            echo json_encode($result);
+
+        }
+
+        public function eliminarReserva() {
+
+            $id = $_REQUEST["id"];
+
+            echo $this->reserva->delete($id);
 
         }
 

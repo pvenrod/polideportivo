@@ -546,7 +546,7 @@ textarea,select {
 }
 
 #tablaReservasPerfil {
-    width: 80% !important;
+    width: 100% !important;
     text-align: center;
     position: relative;
     left: 50%;
@@ -646,4 +646,77 @@ textarea,select {
 
 #tablaNuevaReserva td{
     width: 50% !important;
+}
+
+#divReservasDeUnDia {
+    background-color: white;
+    width: 70%;
+    height: auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0px 0px 10px black;
+    border-radius: 5px;
+    top: 200px;
+    display: none;
+    padding: 20px;
+    text-align: center;
+}
+
+#divReservasDeUnDia #tituloReservas {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+#divReservasDeUnDia #tablaReservasDeUnDia {
+    width: 100%;
+    margin-top: 20px;
+}
+
+#divReservasDeUnDia #tablaReservasDeUnDia td {
+    padding-top: 20px;
+}
+
+.nuevaReservaVentana2 {
+    width: 30px;
+    vertical-align: middle;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.cerrar {
+    width: 20px;
+    vertical-align: middle;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.modificarReserva {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    outline: none;
+}
+.modificarReserva:hover {
+    background-color: #3b913e;
+}
+
+.eliminarReserva {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #af4c4c;
+    color: white;
+    cursor: pointer;
+    outline: none;
+}
+.eliminarReserva:hover {
+    background-color:#943c3c;
 }

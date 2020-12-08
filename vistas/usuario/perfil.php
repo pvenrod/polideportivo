@@ -133,7 +133,8 @@
                                             echo "<tr>
                                                     <td>$reserva->id</td>
                                                     <td>$reserva->fecha</td>
-                                                    <td>$reserva->hora</td>
+                                                    <td>$reserva->horaInicio<br>
+                                                        $reserva->horaFin</td>
                                                     <td>$reserva->precio €</td>
                                                 </tr>";
                                         }
