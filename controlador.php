@@ -520,7 +520,7 @@
             $usuario = $_REQUEST["idUsuario"];
 
             if ($this->reserva->update($id,$fecha,$horaInicio,$horaFin,$precio,$instalacion,$usuario)>0) {
-                $this->gestionReservas();
+                $this->vistaModificarReserva($id);
             } else {
                 echo "<script>
                         i=5;
