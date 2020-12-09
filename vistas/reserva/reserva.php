@@ -10,7 +10,7 @@
             <span id='titulo'>$reserva->fecha</span>
             <table id='tablaPrincipal'>
                 <tr>
-                    <td>
+                    <td colspan='2'>
                         <table class='tituloTablaPerfil'>
                             <tr>
                                 <td><span><strong>Información de la reserva</strong></td>
@@ -104,16 +104,17 @@
                                     <input type='hidden' name='id' value='$reserva->id'>
                                     <input type='hidden' name='idUsuario' value='$reserva->usuario'>
                                     <tr style='height: 20px'></tr>
-                                    <tr>
-                                        <th><button id='botonGuardar' class='botonGuardar'>Guardar</button></th>
-                                        <td><button type='button' class='botonEliminar' onclick='eliminar($reserva->id)'>Eliminar reserva</button></td>
-                                    </tr>
                                     </form>
                                 </table>
                             </div>
                         </td>
                     </tr>
-            </table>  
+                    <tr>
+                                        <th><button id='botonGuardar' class='botonGuardar'>Guardar</button></th>
+                                        <td><button type='button' class='botonEliminar' onclick='eliminar($reserva->id)'>Eliminar reserva</button></td>
+                                    </tr>
+            </table> 
+
         </div>
         <div id='fondo'></div>
         <div id='divConfirmacion'>
@@ -129,8 +130,7 @@
                 $(\"#textoConfirmacion\").html('¿Estás seguro de que deseas eliminar esta reserva?');
         
                 $('#botonConfirmar').click(function() {
-                    location.href='index.php?action=eliminarReserva&id=' + $instalacion->id;
-                    location.href='index.php?action=gestionReservas';
+                    location.href='index.php?action=eliminarReserva&id=' + $reserva->id;
                 });
                 $('#botonCancelar').click(function() {
                     $('#fondo').hide();

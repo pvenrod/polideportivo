@@ -585,7 +585,10 @@
 
             $id = $_REQUEST["id"];
 
-            echo $this->reserva->delete($id);
+            if ($this->seguridad->esAdmin() || $this->seguridad->get('id') == $id) {
+                echo $this->reserva->delete($id);
+            } 
+            
 
         }
 
