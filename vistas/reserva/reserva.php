@@ -72,6 +72,16 @@
 
                                                     foreach($reservasInstalacion as $reservaX) {
 
+                                                        $fecha = strtotime($reserva->fecha);
+                                                        $mes = date('m',$fecha);
+                                                        $dia = date('d',$fecha);
+                                                        $anyo = date('Y',$fecha);
+
+                                                        $fechaReserva = strtotime($reservaX->fecha);
+                                                        $mesX = date('m',$fechaReserva);
+                                                        $diaX = date('d',$fechaReserva);
+                                                        $anyoX = date('Y',$fechaReserva);
+                                                        
                                                         if (($i==$reservaX->horaInicio && $reservaX->id == $reserva->id) && ($mes==$mesX && $dia==$diaX && $anyo==$anyoX)) {
                                                             echo " selected ";
                                                         } else {
