@@ -96,9 +96,13 @@
                                 </tr>
                                 <tr style='height: 10px;'></tr>
                                 <tr>
-                                    <th><button type='button' class='botonModificar' onclick='perfil($usuario->id)'>Ver perfil</button></th>
-                                    <td><button type='button' class='botonEliminar' onclick='eliminar($usuario->id)'>Eliminar</button></td>
-                                </tr>
+                                    <th><button type='button' class='botonModificar' onclick='perfil($usuario->id)'>Ver perfil</button></th>";
+                                    if ($usuario->borrado == "si") {
+                                        echo "<td><button type='button' class='botonGuardar' onclick='activarUsuario($usuario->id)'>Activar</button></td>";
+                                    } else {
+                                        echo "<td><button type='button' class='botonEliminar' onclick='eliminar($usuario->id)'>Eliminar</button></td>";
+                                    }
+                            echo "</tr>
                             </table>
                             <input type='hidden' name='action' value='modificarUsuario'>
                             <input type='hidden' name='id' value='$usuario->id'>
@@ -269,5 +273,22 @@
             }
 
             setTimeout(cambiarSelect,10);
+
+            function activarUsuario() {
+
+                $(\"#textoConfirmacion\").html('¿Estás seguro de que deseas activar a <strong>$usuario->usuario</strong>?');
+
+                $('#botonConfirmar').click(function() {
+                    location.href='index.php?action=activarUsuario&id=' + $usuario->id;
+                });
+                $('#botonCancelar').click(function() {
+                    $('#fondo').hide();
+                    $('#divConfirmacion').hide();
+                });
+                
+                $('#fondo').show();
+                $('#divConfirmacion').show();
+
+            }
 
         </script>";
