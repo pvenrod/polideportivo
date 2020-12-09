@@ -137,6 +137,9 @@
 
             $rutaImagen = $this->imagen->subir($imagen,$id,'usuarios','Usuario');
 
+            $this->db->modificacion("UPDATE poliusuarios
+                                    SET usuario='temporal'
+                                    WHERE id='$id'");
 
             $result = $this->db->modificacion("UPDATE poliusuarios
                                                 SET usuario='$usuario',contrasenya='$contrasenya',email='$email',nombre='$nombre',apellido1='$apellido1',apellido2='$apellido2',dni='$dni',imagen='$rutaImagen'
