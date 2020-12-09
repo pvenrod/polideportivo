@@ -461,7 +461,7 @@
                             var instalacion = respuesta[i].instalacion;
                             var id = respuesta[i].id;
                             var onclickModificar = '\'index.php?action=vistaModificarReserva&id='+ respuesta[i].id + '\'' ;
-                            var onclickEliminar = '\'index.php?action=eliminarReserva&id='+ respuesta[i].id + '\'' ;
+                            var onclickEliminar = '\'index.php?action=eliminarReserva&ajax=true&id='+ respuesta[i].id + '\'' ;
 
                             var trReserva = '<tr id=\"tr'+id+'\">\\n' +
                                                 '<td>\\n' +

@@ -581,13 +581,16 @@
 
         }
 
-        public function eliminarReserva() {
+        public function eliminarReserva($ajax = null) {
 
             $id = $_REQUEST["id"];
 
-            if ($this->seguridad->esAdmin() || $this->seguridad->get('id') == $id) {
+            if ($ajax != null; $this->seguridad->esAdmin() || $this->seguridad->get('id') == $id) {
                 echo $this->reserva->delete($id);
-            } 
+            } else {
+                $this->reserva->delete($id);
+                $this->gestionReservas();
+            }
             
 
         }
