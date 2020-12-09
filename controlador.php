@@ -585,6 +585,10 @@
 
             $id = $_REQUEST["id"];
 
+            if (isset($_REQUEST["ajax"])) {
+                $ajax = true;
+            }
+
             if ($ajax != null && ($this->seguridad->esAdmin() || $this->seguridad->get('id') == $id)) {
                 echo $this->reserva->delete($id);
             } else {
