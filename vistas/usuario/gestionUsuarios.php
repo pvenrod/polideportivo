@@ -98,7 +98,7 @@
                                 <tr>
                                     <th><button type='button' class='botonModificar' onclick='perfil($usuario->id)'>Ver perfil</button></th>";
                                     if ($usuario->borrado == "si") {
-                                        echo "<td><button type='button' class='botonGuardar' onclick='activarUsuario($usuario->id,$usuario->usuario)'>Activar</button></td>";
+                                        echo "<td><button type='button' class='botonGuardar' onclick='activarUsuario(\"$usuario->id\",\"$usuario->usuario\")'>Activar</button></td>";
                                     } else {
                                         echo "<td><button type='button' class='botonEliminar' onclick='eliminar($usuario->id)'>Eliminar</button></td>";
                                     }
