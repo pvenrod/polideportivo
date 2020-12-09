@@ -10,8 +10,8 @@
          */
         public function __construct() {
 
-            //$this->db = new mysqli("localhost","paolo","Gji54@7s","paolo-veneruso");
-            $this->db = new mysqli("localhost","root","","paolo-veneruso");
+            $this->db = new mysqli("localhost","paolo","Gji54@7s","paolo-veneruso");
+            //$this->db = new mysqli("localhost","root","","paolo-veneruso");
 
         }
 
