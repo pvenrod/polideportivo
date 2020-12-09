@@ -507,7 +507,7 @@
             }
 
             function eliminarReserva(id) {
-                $.get('index.php?action=eliminarReserva&id='+id, function( data ) {
+                $.get('index.php?action=eliminarReserva&ajax=true&id='+id, function( data ) {
                     if (data == '1') {
                        $('#tr'+id).slideUp();
                     } else {
