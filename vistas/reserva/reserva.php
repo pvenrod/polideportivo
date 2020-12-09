@@ -104,7 +104,7 @@
                                     <input type='hidden' name='id' value='$reserva->id'>
                                     <input type='hidden' name='idUsuario' value='$reserva->usuario'>
                                     <tr style='height: 20px'></tr>
-                                    </form>
+                                    
                                 </table>
                             </div>
                         </td>
@@ -113,6 +113,7 @@
                                         <th><button id='botonGuardar' class='botonGuardar'>Guardar</button></th>
                                         <td><button type='button' class='botonEliminar' onclick='eliminar($reserva->id)'>Eliminar reserva</button></td>
                                     </tr>
+                                    </form>
             </table> 
 
         </div>
