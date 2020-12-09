@@ -85,7 +85,7 @@
                 $idHorario = $this->horario->getLastId();
 
                 $result2 = $this->db->modificacion("INSERT INTO polihorarioinstalaciones
-                                                    VALUES ('$idHorario','$diaSemana','$horaInicio2:00','$horaCierre2:00','$id')");
+                                                    VALUES ('$idHorario','$diaSemana','$horaInicio:00','$horaCierre:00','$id')");
 
                 $diaSemana++;
 

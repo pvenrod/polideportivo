@@ -239,7 +239,8 @@
             }
 
             function cargarImagen(id) {
-                if ($('#imagen'+id).attr('src') == 'img/usuarios/default.jpg') {
+                var src = $('#imagen'+id).attr('src');
+                if (src.includes('default')) {
                     $.get('index.php?action=cargarImagen&id='+id, function( data ) {
                         $('#imagen'+id).attr('src',data);
                       });
