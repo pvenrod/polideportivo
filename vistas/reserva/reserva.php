@@ -34,10 +34,20 @@
 
                                                     foreach($reservasInstalacion as $reservaX) {
 
-                                                        if ($i==$reservaX->horaInicio && $reservaX->id == $reserva->id) {
+                                                        $fecha = strtotime($reserva->fecha);
+                                                        $mes = date('m',$fecha);
+                                                        $dia = date('d',$fecha);
+                                                        $anyo = date('Y',$fecha);
+
+                                                        $fechaReserva = strtotime($reservaX->fecha);
+                                                        $mesX = date('m',$fechaReserva);
+                                                        $diaX = date('d',$fechaReserva);
+                                                        $anyoX = date('Y',$fechaReserva);
+
+                                                        if (($i==$reservaX->horaInicio && $reservaX->id == $reserva->id) && ($mes==$mesX && $dia==$diaX && $anyo==$anyoX)) {
                                                             echo " selected ";
                                                         } else {
-                                                            if ($i >= $reservaX->horaInicio && $i <= $reservaX->horaFin) {
+                                                            if (($i >= $reservaX->horaInicio && $i <= $reservaX->horaFin) && ($mes==$mesX && $dia==$diaX && $anyo==$anyoX)) {
 
                                                                 echo " disabled style='background-color: red'; ";
     
@@ -62,10 +72,10 @@
 
                                                     foreach($reservasInstalacion as $reservaX) {
 
-                                                        if ($i==$reservaX->horaFin && $reservaX->id == $reserva->id) {
+                                                        if (($i==$reservaX->horaInicio && $reservaX->id == $reserva->id) && ($mes==$mesX && $dia==$diaX && $anyo==$anyoX)) {
                                                             echo " selected ";
                                                         } else {
-                                                            if ($i >= $reservaX->horaInicio && $i <= $reservaX->horaFin) {
+                                                            if (($i >= $reservaX->horaInicio && $i <= $reservaX->horaFin) && ($mes==$mesX && $dia==$diaX && $anyo==$anyoX)) {
 
                                                                 echo " disabled style='background-color: red'; ";
     
