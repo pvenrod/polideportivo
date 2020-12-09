@@ -276,7 +276,7 @@
 
             function activarUsuario() {
 
-                $(\"#textoConfirmacion\").html('¿Estás seguro de que deseas activar a <strong>$usuario->usuario</strong>?');
+                $(\"#divConfirmacion span\").html('¿Estás seguro de que deseas activar a <strong>$usuario->usuario</strong>?');
 
                 $('#botonConfirmar').click(function() {
                     location.href='index.php?action=activarUsuario&id=' + $usuario->id;
