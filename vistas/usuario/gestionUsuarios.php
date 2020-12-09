@@ -98,7 +98,7 @@
                                 <tr>
                                     <th><button type='button' class='botonModificar' onclick='perfil($usuario->id)'>Ver perfil</button></th>";
                                     if ($usuario->borrado == "si") {
-                                        echo "<td><button type='button' class='botonGuardar' onclick='activarUsuario($usuario->id)'>Activar</button></td>";
+                                        echo "<td><button type='button' class='botonGuardar' onclick='activarUsuario($usuario->id,$usuario->usuario)'>Activar</button></td>";
                                     } else {
                                         echo "<td><button type='button' class='botonEliminar' onclick='eliminar($usuario->id)'>Eliminar</button></td>";
                                     }
@@ -274,12 +274,12 @@
 
             setTimeout(cambiarSelect,10);
 
-            function activarUsuario() {
+            function activarUsuario(id,usuario) {
 
-                $(\"#divConfirmacion span\").html('¿Estás seguro de que deseas activar a <strong>$usuario->usuario</strong>?');
+                $(\"#divConfirmacion span\").html('¿Estás seguro de que deseas activar a <strong>'+usuario+'</strong>?');
 
                 $('#botonConfirmar').click(function() {
-                    location.href='index.php?action=activarUsuario&id=' + $usuario->id;
+                    location.href='index.php?action=activarUsuario&id=' + id;
                 });
                 $('#botonCancelar').click(function() {
                     $('#fondo').hide();
