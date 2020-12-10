@@ -274,12 +274,9 @@
             }
 
             function cargarImagen(id) {
-                var src = $('#imagen'+id).attr('src');
-                if (src.includes('default')) {
-                    $.get('index.php?action=cargarImagenInstalacion&id='+id, function( data ) {
-                        $('#imagen'+id).attr('src',data);
-                      });
-                }
+                $.get('index.php?action=cargarImagenInstalacion&id='+id, function( data ) {
+                    $('#imagen'+id).attr('src',data);
+                });
             }
 
             cambiarSelect = function() {";
